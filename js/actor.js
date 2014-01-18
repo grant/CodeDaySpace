@@ -2,7 +2,8 @@ var $spaceArea = $('.spaceArea');
 
 function Actor (params) {
     var self = this;
-
+    this.xdestination = xdestination;
+    this.ydestination = ydestination;
     this.userId = params.userId;
     this.actorId = params.actorId;
     this.type = params.type;
@@ -30,6 +31,15 @@ function Actor (params) {
         self.dom.css('top', self.x);
         self.dom.css('left', self.y);
     };
+
+    this.update_destination = function (mouseX, mouseY) {
+        self.xdestination = mouseX;
+        self.ydestination = mouseY;
+        var velocityLength = Math.sqrt(self.xvelocity * self.xvelocity + self.yvelocity * self.yvelocity);
+        var angle = Math.atan2(self.ydestination - self.y, self.xdestination - self.x);
+        self.yvelocity = velocityLength * Math.sin(angle);
+        self.xvelocity = velocityLength * Math.cos(angle);
+    }
 
     this.dom = createShip();
 }
