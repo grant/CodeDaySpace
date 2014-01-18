@@ -1,3 +1,5 @@
 $(function() {
-	console.log('test');
+	var $spaceArea = $('.spaceArea');
+
+	var world = new World();
 });
