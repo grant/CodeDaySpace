@@ -9,11 +9,19 @@ function World() {
 		type: 'ship',
 		x: 10,
 		y: 10,
-		xvelocity: 10,
-		yvelocity: 20,
+		vx: 10,
+		vy: 20,
 		size: 1,
 		img: '/img/spaceship.png'
     }));
+
+    this.UIEvent = function (event) {
+		var click = event.click;
+		for (var i in actors) {
+			var actor = actors[i];
+			actor.goto(click);
+		}
+	};
 
 	this.updateActors = function (ms) {
 		for (var i in actors) {
@@ -23,6 +31,7 @@ function World() {
 		}
 	};
 
+	// KEEP AT END
 	var ms = 100;
 	window.setInterval(function(){
 		self.updateActors(ms);
