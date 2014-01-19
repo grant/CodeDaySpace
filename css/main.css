@@ -19,6 +19,18 @@ body > div {
 	overflow: hidden;
 }
 
+.header {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	color: white;
+}
+
+.right {
+	float: right;
+}
+
+
 .ship {
 /*	transition: rotate .5s;
 	-webkit-transition: -webkit-transform .5s linear;
