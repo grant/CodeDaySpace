@@ -126,32 +126,68 @@ function UI(world) {
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
+	    var winWid = $(window).width();
+	    var winHei = $(window).height();
 		if (scrollEnabled) {
-			var percentX = mouseX/$(window).width();
-	    	var percentY = mouseY/$(window).height();
+			var percentX = mouseX/winWid;
+	    	var percentY = mouseY/winHei;
 	    	var currMapX = parseInt($('.spaceArea').css('left'));
 	    	var currMapY = parseInt($('.spaceArea').css('top'));
 	    	var edgeDetection = 0.2;
 	    	var scrollSpeed = 20;
-	    	if (percentX < edgeDetection) {
-	    		var scale = 1 - (percentX/edgeDetection);
-	    		$('.spaceArea').css('left', currMapX + (Math.pow(1+scale,2)-1)*scrollSpeed);
-	    	} else if (percentX > 1 - edgeDetection) {
-	    		var scale = (percentX - (1 - edgeDetection))/edgeDetection;
-	    		$('.spaceArea').css('left', currMapX - (Math.pow(1+scale,2)-1)*scrollSpeed);
-	    	}
-	    	if (percentY < edgeDetection) {
-	    		var scale = 1 - (percentY/edgeDetection);
-	    		$('.spaceArea').css('top', currMapY + (Math.pow(1+scale,2)-1)*scrollSpeed);
-	    	} else if (percentY > 1 - edgeDetection) {
-	    		var scale = (percentY - (1 - edgeDetection))/edgeDetection;
-	    		$('.spaceArea').css('top', currMapY - (Math.pow(1+scale,2)-1)*scrollSpeed);
+	    	if (mouseX > winWid - 200 && mouseY > winHei - 200) {
+	    		// Use minimap, no scroll
+	    	} else {
+		    	if (percentX < edgeDetection) {
+		    		var scale = 1 - (percentX/edgeDetection);
+		    		$('.spaceArea').css('left', currMapX + (Math.pow(1+scale,2)-1)*scrollSpeed);
+		    	} else if (percentX > 1 - edgeDetection) {
+		    		var scale = (percentX - (1 - edgeDetection))/edgeDetection;
+		    		$('.spaceArea').css('left', currMapX - (Math.pow(1+scale,2)-1)*scrollSpeed);
+		    	}
+		    	if (percentY < edgeDetection) {
+		    		var scale = 1 - (percentY/edgeDetection);
+		    		$('.spaceArea').css('top', currMapY + (Math.pow(1+scale,2)-1)*scrollSpeed);
+		    	} else if (percentY > 1 - edgeDetection) {
+		    		var scale = (percentY - (1 - edgeDetection))/edgeDetection;
+		    		$('.spaceArea').css('top', currMapY - (Math.pow(1+scale,2)-1)*scrollSpeed);
+		    	}
 	    	}
 		}
 	}, 50);
-
     $('.viewFrame').mousemove(function (event) {
     	mouseX = event.clientX;
     	mouseY = event.clientY;
     });
+
+    // Click on the minimap
+    // var mouseDown = false;
+    // $('.minimap').mousemove(function(event) {
+    // 	if (mouseDown) {
+    // 		scrollMap(event);
+    // 	}
+    // });
+    // $(window).mouseup(function() {
+    // 	mouseDown = false;
+    // });
+    $('.minimap').mousedown(function(event) {
+    	scrollMap(event);
+    });
+
+    function scrollMap (event) {
+    	var x = event.offsetX;
+    	var y = event.offsetY;
+    	var percentX = x/$('.minimap').width() - .5;
+    	var percentY = y/$('.minimap').height() - .5;
+
+		var currMapX = parseInt($('.spaceArea').css('left'), 10);
+		var currMapY = parseInt($('.spaceArea').css('top'), 10);
+		var minX = currMapX - (mapWidth/2);
+		var maxX = currMapX + (mapWidth/2);
+		var minY = currMapY - (mapWidth/2);
+		var maxY = currMapY + (mapWidth/2);
+
+		$spaceArea.css('left', currMapX - percentX*mapWidth + 'px');
+		$spaceArea.css('top', currMapY - percentY*mapHeight + 'px');
+    }
 };

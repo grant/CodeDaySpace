@@ -14,10 +14,10 @@ function Spaceship(params) {
     this.health = params.health || 100;
     this.laserFired = false;
 
-    var cooldown= 25;
+    var cooldown= 15;
     var timeSinceLaser = cooldown;
-    this.update = function (deltaT, actors) {
 
+    this.update = function (deltaT, actors) {
         if (this.laserFired) {
             timeSinceLaser--;
             if (timeSinceLaser == 0) {
@@ -67,6 +67,21 @@ function Spaceship(params) {
             self.vx = 0;
             self.vy = 0;
         }
+    };
+
+    this.closestBaddie = function (otherActors) {//returns an array [x,y] of the positions of the closet enemy spaceship
+        var ans;
+        var smallestDist;
+        otherActors.filter(function (act) {
+            return (act.type == Actor.SPACESHIP);
+        }).forEach(function (act) {
+            var dist2 = Math.sqrt(Math.pow(act.x - self.x, 2) + Math.pow(act.y - self.y, 2))
+            if ((typeof (smallestDist) === "undefined") || (dist2 < smallestDist)) {
+                smallestDist = dist2;
+                ans = [act.x,act.y];
+            }
+        });
+        return ans;
     };
 
     this.force = function (actors) {
