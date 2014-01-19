@@ -45,7 +45,7 @@ function Actor (params) {
             Helpers.packFloat(self.y) +
             Helpers.packFloat(self.width) +
             Helpers.packFloat(self.height) +
-            Helpers.packFloat(self.rot + self.rotOffset) +
+            Helpers.packFloat(self.rot) +
             Helpers.packInt(self.img.length) +
             self.img);
     };
@@ -60,7 +60,7 @@ Actor.deserialize = function (data, ind) {
         rot: Helpers.parseFloat(data, ind)
     };
     imgLen = Helpers.parseInt(data, ind);
-    params.img = data.substring(ind.ind, imgLen);
-    ind += imgLen;
-    return new Actor(param);
+    params.img = data.substr(ind.ind, imgLen);
+    ind.ind += imgLen;
+    return new Actor(params);
 };

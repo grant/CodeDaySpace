@@ -16,14 +16,14 @@ function Spaceship(params) {
         var angle = Math.atan2(xdiff, ydiff);
 
         forces = this.force(actors);
-        console.log(forces);
+        //console.log(forces);
 
         // v accelerates in direction towards destination
         var deltaLen = xdiff * xdiff + ydiff * ydiff;
         var acceleration = deltaLen * deltaT;
         if (acceleration > self.maxA)
             acceleration = self.maxA;
-        console.log(acceleration);
+        //console.log(acceleration);
 
         self.vx += xdiff * acceleration / deltaLen * deltaT;
         self.vy += ydiff * acceleration / deltaLen * deltaT;
