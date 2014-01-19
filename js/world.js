@@ -48,6 +48,8 @@ function World() {
 		return world;
 	};
 
+	// this.deserialize =
+
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
         for (var i in uiEvent.click.selected) {
@@ -70,7 +72,6 @@ function World() {
 	window.setInterval(function(){
 		self.updateActors(ms);
 	}, ms);
-	console.log(JSON.stringify(self.serialize()));
 }
 
 function pushToServer() {
