@@ -12,24 +12,33 @@ function Spaceship(params) {
     this.maxA = params.maxA || 1;
     this.still = 0;
     this.health = params.health || 100;
+    this.laserFired = false;
 
+    var cooldown= 25;
+    var timeSinceLaser = cooldown;
     this.update = function (deltaT, actors) {
+
+        if (this.laserFired) {
+            timeSinceLaser--;
+            if (timeSinceLaser == 0) {
+                timeSinceLaser = cooldown;
+                this.laserFired = false;
+            }
+        }        
+
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
         if (xdiff * xdiff + ydiff * ydiff < 50)
             return;
 
         var angle = Math.atan2(xdiff, ydiff);
-
-        forces = this.force(actors);
-        //console.log(forces);
+        //forces = this.force(actors);
 
         // v accelerates in direction towards destination
         var deltaLen = xdiff * xdiff + ydiff * ydiff;
         var acceleration = deltaLen * deltaT;
         if (acceleration > self.maxA)
             acceleration = self.maxA;
-        //console.log(acceleration);
 
         self.vx += xdiff * acceleration / deltaLen * deltaT;
         self.vy += ydiff * acceleration / deltaLen * deltaT;
@@ -64,6 +73,13 @@ function Spaceship(params) {
         var forcex = 0;
         var forcey = 0;
         //        var thisRadius = Math.sqrt(Math.pow(self.width * 0.5,2) + Math.pow(self.height*0.5,2));
+        actors.filter(function (act) {
+            return (act.type == Actor.LASER) && (act.frameLife <= 0);
+        }).forEach(function (act) {
+            
+        });
+
+
         for (var i in actors) {
             curActor = actors[i];
             if (curActor.userId != self.userId || curActor.actorId != self.actorId) {
