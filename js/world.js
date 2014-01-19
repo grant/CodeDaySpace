@@ -24,40 +24,18 @@ function World() {
 
     var otherActors = [];
     var actors = [];
-    //var actors = [new Spaceship({
-    //    userId: 'grant',
-    //    actorId: 1,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 50,
-    //    y: 50,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //}), new Spaceship({
-    //    userId: 'alex',
-    //    actorId: 2,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 550,
-    //    y: 350,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //})];
+
+    this.addActor = function (actor) {
+        var id = 0;
+        while (actors.filter(function (act) { return act.actorId == id; }).length > 0) 
+            id++;
+        actor.actorId = id;
+        actors.push(actor);
+    };
 
     this.spawnShip = function () {
-        actors.push(new Spaceship({
+        newShip = new Spaceship({
             userId: playerId,
-            actorId: actors.length,
             type: 0,
             width: 100,
             height: 100,
@@ -67,18 +45,28 @@ function World() {
             vy: 0,
             maxV: 1500,
             maxA: 1000,
-            scale: 1,
             img: 'img/spaceship.png'
-        }));
+        });
+        self.addActor(newShip);
     };
 
-    var spawnLaser = function (p) {
-        actors.push(new Laser({
+    var spawnLaser = function (actor) {
+        newLaser = new Laser({
+            width: 10,
+            height: 50,
+            userId: actor.userId,
+            type: Actor.LASER,
+            x: actor.x,
+            y: actor.y,
+            img: 'img/laser.png',
+            rot: actor.rot,
+            rotOffset: 180,
             v: 100000,
-            xdes: p[0],
-            ydes: p[1],
+            xdes: actor.xdes,
+            ydes: actor.ydes,
             frameLife: 5
-        }));
+        });
+        self.addActor(newLaser);
     }
 
     var serialize = function () {
@@ -118,7 +106,7 @@ function World() {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
             if (click.ctrl) 
-                spawnLaser([act.xdes, act.ydes]);
+                spawnLaser(act);
             else
                 act.goto(click);
         });
@@ -161,9 +149,6 @@ function World() {
 
                     cBack();
                 });
-
-
-
             });
         });
     };
