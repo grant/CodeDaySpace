@@ -64,7 +64,8 @@ function World() {
             v: 10000,
             xdes: p[0],
             ydes: p[1],
-            frameLife: 5
+            frameLife: 5,
+            damage: 30
         });
         self.addActor(newLaser);
     }
@@ -112,14 +113,15 @@ function World() {
                 act.repaint();
             }
             if (act.type == Actor.LASER) {
-                for (var i = actors.length - 1; i >= 0; i--)
+                for (var i = actors.length - 1; i >= 0; i--) {
                     var cact = actors[i];
-                if (cact.type == Actor.SPACESHIP) {
-                    if ((cact.x - act.x) * (cact.x - act.x) + (cact.y - act.y) * (cact.y - act.y) < 30) {
-                        cact.health -= act.dmg;
-                        if (cact.health < 0) {
-                            cact.dom.remove();
-                            actors.pop(i);
+                    if (cact.type == Actor.SPACESHIP) {
+                        if ((cact.x - act.x) * (cact.x - act.x) + (cact.y - act.y) * (cact.y - act.y) < 3000) {
+                            cact.health -= act.dmg;
+                            if (cact.health < 0) {
+                                cact.dom.remove();
+                                actors.pop(i);
+                            }
                         }
                     }
                 }
@@ -180,6 +182,9 @@ function World() {
                         var res = actors.filter(function (act) { return act.type == Actor.RESOURCES; });
                         if (res.length == 0) {
                             resources = new Resources({
+                                userId: playerId,
+                                actorId: 0,
+                                type: Actor.RESOURCES,
                                 minerals: 1000,
                                 gas: 100
                             });
@@ -228,6 +233,9 @@ function World() {
         ui = new UI(self);
         var ms = 100;
         resources = new Resources({
+            userId: 0,
+            actorId: 0,
+            type: Actor.RESOURCES,
             minerals: 1000,
             gas: 100
         });
