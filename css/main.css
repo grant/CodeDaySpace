@@ -101,5 +101,5 @@ body > div {
 }
 
 .selected {
-	border: 5px solid yellow;
+	box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.3);
 }
