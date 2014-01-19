@@ -22,36 +22,38 @@ function World() {
 
 	var otherActos = [];
 	var actors = {};
-	//var id1 = 111;
-    //actors[id1]=(new Actor({
-	//	userId: 'grant',
-	//	actorId: id1,
-	//	type: 'ship',
-	//	x: 50,
-	//	y: 50,
-	//	vx: 0,
-	//	vy: 0,
-	//	maxV: 100,
-	//	maxA: 10,
-	//	scale: 1,
-	//	img: 'img/spaceship.png'
-    //}));
-    //var id2 = 222;
-    //actors[id2]=(new Actor({
-	//	userId: 'alex',
-	//	actorId: id2,
-	//	type: 'ship',
-	//	width: 100,
-	//	height: 1500,
-	//	x: 450,
-	//	y: 450,
-	//	vx: 0,
-	//	vy: 0,
-	//	maxV: 100,
-	//	maxA: 10,
-	//	scale: 1,
-	//	img: 'img/spaceship.png'
-	//}));
+	var id1 = 111;
+    actors[id1]=(new Spaceship({
+		userId: 'grant',
+		actorId: id1,
+		type: 'ship',
+		width: 100,
+		height: 100,
+		x: 50,
+		y: 50,
+		vx: 0,
+		vy: 0,
+		maxV: 100,
+		maxA: 2,
+		scale: 1,
+		img: 'img/spaceship.png'
+    }));
+    var id2 = 222;
+    actors[id2] = (new Spaceship({
+		userId: 'alex',
+		actorId: id2,
+		type: 'ship',
+		width: 100,
+		height: 100,
+		x: 550,
+		y: 350,
+		vx: 0,
+		vy: 0,
+		maxV: 100,
+		maxA: 2,
+		scale: 1,
+		img: 'img/spaceship.png'
+	}));
 
 	this.serialize = function () {
 		var world = {
@@ -84,7 +86,7 @@ function World() {
 	this.updateActors = function (ms) {
 		for (var i in actors) {
 			var actor = actors[i];
-			actor.update(ms);
+			actor.update(ms,actors);
 			actor.repaint();
 		}
 		net.pushPull(self.serialize, function (data) {
