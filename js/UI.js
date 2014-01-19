@@ -67,13 +67,16 @@ function UI(world) {
     }
 
     this.updateResourceUI = function (data) {
-        $('.minerals').html(data.minerals);
-        $('.gas').html(data.gas);
+        $('.minerals .data').html(data.minerals);
+        $('.gas .data').html(data.gas);
     };
 
     this.updateMinimap = function (actors) {
     	var others = actors.others;
     	var yours = actors.yours;
+
+		var currMapX = parseInt($('.spaceArea').css('left'));
+		var currMapY = parseInt($('.spaceArea').css('top'));
     };
 
     // Scroll the world

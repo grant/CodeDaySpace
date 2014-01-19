@@ -133,10 +133,11 @@ function World() {
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
-            if (click.ctrl)
+            if (click.ctrl) {
                 spawnLaser(act,[click.x,click.y]);
-            else
+            } else {
                 act.goto(click);
+            }
         });
     };
 

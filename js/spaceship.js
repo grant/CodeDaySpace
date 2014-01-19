@@ -85,7 +85,7 @@ function Spaceship(params) {
     this.serialize = function () {
         return parentSer() +
             Helpers.packFloat(this.maxV) +
-            Helpers.packFloat(this.maxA) + 
+            Helpers.packFloat(this.maxA) +
             Helpers.packFloat(this.health);
     };
 
@@ -96,8 +96,12 @@ function Spaceship(params) {
 
 
     this.goto = function (point) {
-        self.xdes = point.x;
-        self.ydes = point.y;
+        var randomScale = 50;
+        var randx = Math.random() * randomScale - (randomScale/2);
+        var randy = Math.random() * randomScale - (randomScale/2);
+
+        self.xdes = point.x + randx;
+        self.ydes = point.y + randy;
     };
 
 };

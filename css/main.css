@@ -35,6 +35,18 @@ body > div {
 	float: right;
 }
 
+.minimap {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 200px;
+	height: 200px;
+	margin: 10px;
+	background-color: gray;
+	overflow: hidden;
+	opacity: .5;
+}
+
 
 .ship {
 /*	transition: rotate .5s;
