@@ -18,7 +18,6 @@ function Spaceship(params) {
     var timeSinceLaser = cooldown;
 
     this.update = function (deltaT, actors) {
-        console.log(cooldown);
         if (this.laserFired) {
             timeSinceLaser--;
             if (timeSinceLaser == 0) {
