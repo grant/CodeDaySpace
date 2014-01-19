@@ -29,22 +29,23 @@ function UI(world) {
         if (isImg) {
 	        if (index == -1) {
 	            self.selected.push(actorId);
-	            console.log("selected");
 	        } else {
 	            self.selected.splice(index, 1);
-	            console.log("deselected");
 	        }
-        }
+		} else {
+			self.selected = [];
+		}
     }
 
     function rightClick (event) {
 		var x = event.clientX;
 		var y = event.clientY;
-	    world.UIEvent({
+		console.log(self.selected);
+		world.UIEvent({
 	        "click": {
 	            x: x,
 	            y: y,
-	            selected: selected
+	            selected: self.selected
 	        }
 	    });
     }

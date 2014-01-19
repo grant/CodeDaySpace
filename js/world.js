@@ -19,22 +19,25 @@ function World() {
     }));
     var id2 = 1;
     actors[id2]=(new Actor({
-         userId: 'alex',
-         actorId: id2,
-         type: 'ship',
-         width: 100,
-         height: 1500,
-         x: 450,
-         y: 450,
-         vx: 0,
-         vy: 0,
-         size: 1,
-         img: '/img/spaceship.png'
+		userId: 'alex',
+		actorId: id2,
+		type: 'ship',
+		width: 100,
+		height: 1500,
+		x: 450,
+		y: 450,
+		vx: 0,
+		vy: 0,
+		maxV: 100,
+		maxA: 10,
+		scale: 1,
+		img: 'img/spaceship.png'
      }));
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
-        for (var i in uiEvent.selected) {
+        console.log(uiEvent.click.selected);
+        for (var i in uiEvent.click.selected) {
             var actor = actors[i];
             actor.goto(click);
 		}
