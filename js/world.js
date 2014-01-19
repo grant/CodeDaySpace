@@ -105,7 +105,17 @@ function World() {
 	};
 
 	this.updateActors = function (ms) {
+<<<<<<< HEAD
+	    actors.forEach(function (act) { 
+	        act.update(ms, actors); 
+	        act.repaint(); 
+	        if (act.type == "laser" && act.frameLife < 0) {
+	            //delete the laser
+	        }
+	    });
+=======
 	    actors.forEach(function (act) { act.update(ms, actors); act.repaint(); });
+>>>>>>> 11b1ed5e62bed872018c02669e08b0a1fcf8ee33
 	    var dta = serialize();
 		net.pushPull(dta, function (data) {
 		    deserialize(data);
@@ -130,4 +140,8 @@ function World() {
 	    });
 	};
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 11b1ed5e62bed872018c02669e08b0a1fcf8ee33
