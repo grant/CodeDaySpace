@@ -1,11 +1,9 @@
-/// <reference path="actor.js" />
-
 function Spaceship(params) {
     Actor.call(this, params);
 
     var self = this;
-    this.xdes = params.xdes || params.x || 0;
-    this.ydes = params.ydes || params.y || 0;
+    this.xdes = params.xdes || params.x + params.width * 0.5 || 0;
+    this.ydes = params.ydes || params.y + params.height * 0.5 || 0;
     this.vx = params.vx || 0;// x velocity
     this.vy = params.vy || 0;// y velocity
     this.maxV = params.maxV;
@@ -18,14 +16,14 @@ function Spaceship(params) {
         var angle = Math.atan2(xdiff, ydiff);
 
         forces = this.force(actors);
-        //console.log(forces);
+        console.log(forces);
 
         // v accelerates in direction towards destination
         var deltaLen = xdiff * xdiff + ydiff * ydiff;
         var acceleration = deltaLen * deltaT;
         if (acceleration > self.maxA)
             acceleration = self.maxA;
-        //console.log(acceleration);
+        console.log(acceleration);
 
         self.vx += xdiff * acceleration / deltaLen * deltaT;
         self.vy += ydiff * acceleration / deltaLen * deltaT;
@@ -53,18 +51,15 @@ function Spaceship(params) {
         if (self.still > 2) {
             self.vx = 0;
             self.vy = 0;
-
         }
     };
 
     this.force = function (actors) {
         var forcex = 0;
         var forcey = 0;
-        //        var thisRadius = Math.sqrt(Math.pow(self.width * 0.5,2) + Math.pow(self.height*0.5,2));
         for (var i in actors) {
             curActor = actors[i];
             if (curActor.userId != self.userId || curActor.actorId != self.actorId) {
-                //                var curRadius = Math.sqrt(Math.pow(curActor.width * 0.5,2) + Math.pow(curActor.height*0.5,2));
                 var xToAdd = 1 / Math.exp((Math.abs(self.x - curActor.x) - self.width * 0.5 - curActor.width * 0.5) / 100);
                 if (curActor.x < self.x)
                     xToAdd *= -1;
@@ -76,14 +71,7 @@ function Spaceship(params) {
             }
         }
         return [forcex, forcey];
-    };
-
-    var parentSer = this.serialize;
-    this.serialize = function () {
-        return parentSer() +
-            Helpers.packFloat(this.maxV) +
-            Helpers.packFloat(this.maxA);
-    };
+    }
 
 
     this.getV = function () {
@@ -95,12 +83,4 @@ function Spaceship(params) {
         self.xdes = point.x;
         self.ydes = point.y;
     };
-
-};
-
-Spaceship.deserialize = function (data, ind) {
-    var params = Actor.deserialize(data, ind);
-    params.maxV = Helpers.parseFloat(data, ind);
-    params.maxA = Helpers.parseFloat(data, ind);
-    return params;
-};
+}
