@@ -32,12 +32,36 @@ function UI(world) {
         }
     });
 
+    $viewFrame.dblclick(function() {
+    	self.selected = [];
+    	var $ships = $spaceArea.find('img');
+    	var yours = world.getActors().yours;
+    	yours.forEach(function(actor) {
+    		if (actor.type === Actor.SPACESHIP) {
+    			self.selected.push(actor.actorId);
+    		}
+    	});
+    	updateSelectedUI();
+    });
+
+    function updateSelectedUI () {
+        // change select state UI
+        $spaceArea.children().removeClass('selected');
+        for (var i in self.selected) {
+            var index = self.selected[i];
+            $spaceArea.find('img').filter(function (i) {
+                return $(this).data('id') === index;
+            }).addClass('selected');
+        }
+    }
+
     function leftClick(event) {
         var $clickedObj = $(event.target);
         var actorId = $clickedObj.data("id");
         var index = self.selected.indexOf(actorId);
         var isImg = $clickedObj.prop('tagName') === 'IMG';
-        if (isImg) {
+        var isShip = $clickedObj.hasClass('ship');
+        if (isImg && isShip) {
             if (index == -1) {
                 self.selected.push(actorId);
             } else {
@@ -51,14 +75,7 @@ function UI(world) {
 	            self.selected = [];
 	        }
         }
-        // change select state UI
-        $spaceArea.children().removeClass('selected');
-        for (var i in self.selected) {
-            var index = self.selected[i];
-            $spaceArea.find('img').filter(function (i) {
-                return $(this).data('id') === index;
-            }).addClass('selected');
-        }
+        updateSelectedUI();
     }
 
     function rightClick(event) {
