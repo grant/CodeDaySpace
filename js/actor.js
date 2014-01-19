@@ -48,7 +48,9 @@ function Actor (params) {
         self.rot = -(180/Math.PI) * angle + self.rotOffset;
 
         // if close
-        // if (Math.sqrt()) {}
+        if (Math.sqrt(xdiff*xdiff + ydiff*ydiff) < 100) {
+            // self
+        }
     };
 
     this.repaint = function () {
@@ -69,14 +71,3 @@ function Actor (params) {
 
     this.dom = createShip();
 }
-
-// function actor() {
-//     this.userId = "undefined";
-//     this.x = 0;
-//     this.y = 0;
-//     this.type = "undefined";
-//     this.vx = 0;
-//     this.vy = 0;
-//     this.img = "undefined";
-//     this.size = 1;
-// }

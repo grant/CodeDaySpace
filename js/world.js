@@ -16,12 +16,23 @@ function World() {
 		size: 1,
 		img: '/img/spaceship.png'
     }));
+    // actors.push(new Actor({
+    //     userId: 'alex',
+    //     actorId: 23,
+    //     type: 'ship',
+    //     x: 550,
+    //     y: 550,
+    //     vx: 10,
+    //     vy: 20,
+    //     size: 1,
+    //     img: '/img/spaceship.png'
+    // }));
 
-    this.UIEvent = function (event) {
-		var click = event.click;
-		for (var i in actors) {
-			var actor = actors[i];
-			actor.goto(click);
+    this.UIEvent = function (uiEvent) {
+        var click = uiEvent.click;
+        for (var i in actors) {
+            var actor = actors[i];
+            actor.goto(click);
 		}
 	};
 
