@@ -72,7 +72,8 @@ function UI(world) {
     }
 
     this.updateMinimap = function (actors) {
-    	// console.log(actors);
+    	var others = actors.others;
+    	var yours = actors.yours;
     };
 
     // Scroll the world
