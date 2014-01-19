@@ -63,10 +63,6 @@ function World() {
 		}
 	};
 
-	this.serialize (poops and craps)
-    testing
-    done
-
 	// KEEP AT END
 	var ms = 50;
 	window.setInterval(function(){
