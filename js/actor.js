@@ -30,6 +30,7 @@ function Actor (params) {
     };
 
 
+
     this.setId = function (id) {
         self.dom.data('id', this.actorId = id);
     };

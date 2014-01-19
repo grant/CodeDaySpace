@@ -33,7 +33,7 @@ function World() {
             vy: 0,
             maxV: 1500,
             maxA: 1000,
-            img: 'img/spaceship.png'
+            img: 'img/spaceship'+String(userId)+'.png'
         });
         self.addActor(newShip);
     };
@@ -46,7 +46,7 @@ function World() {
             type: Actor.LASER,
             x: actor.x+0.5*actor.width,
             y: actor.y + 0.5 * actor.height,
-            img: 'img/laser.png',
+            img: 'img/laser'+String(userId)+'.png',
             rot: actor.rot,
             rotOffset: 150,
             v: 10000,
