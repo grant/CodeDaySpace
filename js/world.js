@@ -56,7 +56,7 @@ function World() {
             height: 50,
             userId: actor.userId,
             type: Actor.LASER,
-            x: actor.x+0.5*actor.width,
+            x: actor.x + 0.5 * actor.width,
             y: actor.y + 0.5 * actor.height,
             img: 'img/laser'+String(actor.userId%3)+'.png',
             rot: actor.rot,
@@ -139,22 +139,30 @@ function World() {
             if (click.ctrl && !act.laserFired) {
                 act.laserFired = true;
                 spawnLaser(act, [click.x, click.y]);
-            } else {
+            } else if (!click.ctrl) {
                 act.goto(click);
             }
         });
     };
 
     this.updateActors = function (ms) {
-        actors.filter(function (act) {
+        actors.filter(function (act) { //remove lasers that have expired
             return (act.type == Actor.LASER) && (act.frameLife <= 0);
         }).forEach(function(act) { act.dom.remove(); });
 
-        actors = actors.filter(function (act) {
+        actors = actors.filter(function (act) { //remove these lasers from the actors array
             return (act.type != Actor.LASER) || (act.frameLife > 0);
         });
 
         actors.forEach(function (act) {
+            if (act.type == Actor.SPACESHIP) {
+                baddiePos = act.closestBaddie(otherActors); //returns the closest bad guy
+                if (!act.laserFired) {
+                    act.laserFired = true;
+                    spawnLaser(act, [baddiePos[0], baddiePos[1]]);
+                }
+            }
+
             if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER)) {
                 act.update(ms, actors);
                 act.repaint();
