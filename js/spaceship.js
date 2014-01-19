@@ -72,12 +72,12 @@ function Spaceship(params) {
 
     this.closestBaddie = function (otherActors) {//returns an array [x,y] of the positions of the closet enemy spaceship
         var ans;
-        var smallestDist;
+        var smallestDist = 1000;
         otherActors.filter(function (act) {
             return (act.type == Actor.SPACESHIP);
         }).forEach(function (act) {
             var dist2 = Math.sqrt(Math.pow(act.x - self.x, 2) + Math.pow(act.y - self.y, 2))
-            if ((typeof (smallestDist) === "undefined") || (dist2 < smallestDist)) {
+            if (dist2 < smallestDist) {
                 smallestDist = dist2;
                 ans = [act.x,act.y];
             }
