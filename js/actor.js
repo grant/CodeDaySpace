@@ -15,8 +15,8 @@ function Actor (params) {
     this.x = params.x || 0;
     this.y = params.y || 0;
     this.img = params.img;
-    this.rot = 0; // rotation in degrees
-    this.rotOffset = 90;
+    this.rot = params.rot || 0; // rotation in degrees
+    this.rotOffset = params.rotOffset || 0;
 
 
     var createActor = function () {
@@ -41,6 +41,7 @@ function Actor (params) {
     this.dom = createActor();
 
     this.serialize = function () {
+        console.log(self.rot);
         return (Helpers.packFloat(self.x) +
             Helpers.packFloat(self.y) +
             Helpers.packFloat(self.width) +
@@ -59,6 +60,7 @@ Actor.deserialize = function (data, ind) {
         height: Helpers.parseFloat(data, ind),
         rot: Helpers.parseFloat(data, ind)
     };
+    console.log(params.rot);
     imgLen = Helpers.parseInt(data, ind);
     params.img = data.substr(ind.ind, imgLen);
     ind.ind += imgLen;
