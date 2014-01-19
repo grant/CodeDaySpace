@@ -1,6 +1,7 @@
 function UI(world) {
     var $spaceArea = $('.spaceArea');
-    var selected = [];
+    this.selected = [];
+    self = this;
 
     document.oncontextmenu = function() {return false;};
 	$(document).mousedown(function(event){
@@ -21,15 +22,18 @@ function UI(world) {
     });
 
     function leftClick (event) {
-        var clickedObj = $(event.target);
-        var actorId = clickedObj.data("id");
-        var index = selected.indexOf(actorId);
+        var $clickedObj = $(event.target);
+        console.log($clickedObj.prop("tagName"));
+        $clickedObj.prop("tagName") === "IMG";
+        var actorId = $clickedObj.data("id");
         console.log(actorId);
+        var index = self.selected.indexOf(actorId);
+        console.log(index);
         if (index == -1) {
-            selected.push(actorId);
+            self.selected.push(actorId);
             console.log("selected");
         } else {
-            selected.splice(index, 1);
+            self.selected.splice(index, 1);
             console.log("deselected");
         }
 
@@ -38,11 +42,12 @@ function UI(world) {
     function rightClick (event) {
 		var x = event.clientX;
 		var y = event.clientY;
-	    world.UIEvent({
+		console.log(self.selected);
+		world.UIEvent({
 	        "click": {
 	            x: x,
 	            y: y,
-	            selected: selected
+	            selected: self.selected
 	        }
 	    });
     }

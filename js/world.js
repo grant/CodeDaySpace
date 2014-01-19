@@ -28,13 +28,14 @@ function World() {
          y: 450,
          vx: 0,
          vy: 0,
-         size: 1,
+         scale: 1,
          img: '/img/spaceship.png'
      }));
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
-        for (var i in uiEvent.selected) {
+        console.log(uiEvent.click.selected);
+        for (var i in uiEvent.click.selected) {
             var actor = actors[i];
             actor.goto(click);
 		}
