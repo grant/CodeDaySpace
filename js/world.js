@@ -116,7 +116,8 @@ function World() {
                 for (var i = actors.length - 1; i >= 0; i--) {
                     var cact = actors[i];
                     if ((cact.type == Actor.SPACESHIP) || (act.type == Actor.BASE)) {
-                        if ((cact.x - act.x) * (cact.x - act.x) + (cact.y - act.y) * (cact.y - act.y) < 3000) {
+                        if (((cact.x + cact.width / 2 - act.x) * (cact.x + cact.width / 2 - act.x) +
+                            (cact.y + cact.height / 2 - act.y) * (cact.y + cact.height / 2 - act.y)) < 3000) {
                             cact.health -= act.dmg;
                             if (cact.health < 0) {
                                 cact.dom.remove();
@@ -158,12 +159,13 @@ function World() {
 
         actors.forEach(function (act) {
             if (act.type == Actor.SPACESHIP) {
-                baddiePos = act.closestBaddie(otherActors); //returns the closest bad guy
-                if (typeof (baddiePos) != "undefined") {
-                    if (!act.laserFired) {
-                        act.laserFired = true;
-                        spawnLaser(act, [baddiePos[0], baddiePos[1]]);
-                    }
+                var target = otherActors.reduce(function (cur, oAct) {
+                    var dis = Math.sqrt((oAct.x - act.x) * (oAct.x - act.x) + (oAct.y - act.y) * (oAct.y - act.y));
+                    return dis < cur[0] ? [dis, oAct] : cur;
+                }, [600, null])[1];
+                if ((target != null) && (!act.laserFired)) {
+                    act.laserFired = true;
+                    spawnLaser(act, [target.x + target.width / 2, target.y + target.height / 2]);
                 }
             }
 
