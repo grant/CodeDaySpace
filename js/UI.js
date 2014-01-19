@@ -74,34 +74,55 @@ function UI(world) {
     var mapWidth = 10000;
     var mapHeight = 10000;
     this.updateMinimap = function (actors) {
-    	var others = actors.others;
-    	var yours = actors.yours;
+		var others = actors.others;
+		var yours = actors.yours;
 
-		var currMapX = parseInt($('.spaceArea').css('left'));
-		var currMapY = parseInt($('.spaceArea').css('top'));
+		var currMapX = -parseInt($('.spaceArea').css('left'), 10);
+		var currMapY = -parseInt($('.spaceArea').css('top'), 10);
 		var minX = currMapX - (mapWidth/2);
 		var maxX = currMapX + (mapWidth/2);
 		var minY = currMapY - (mapWidth/2);
 		var maxY = currMapY + (mapWidth/2);
 
 		$('.minimap').empty();
-		yours.forEach(function(actor) {
-			if (actor.type === Actor.SPACESHIP) {
-				var x = actor.x;
-				var y = actor.y;
-				var percentX = (x - minX)/mapWidth;
-				var percentY = (y - minY)/mapWidth;
-				var $rect = $('<div/>');
-				$rect.addClass('mapElement');
-				$rect.css('left', percentX*100 + '%');
-				$rect.css('top', percentY*100 + '%');
-				$('.minimap').append($rect);
-			}
-		});
+		if (yours) {
+			yours.forEach(function(actor) {
+				if (actor.type === Actor.SPACESHIP) {
+					addActorToMinimap(actor, ['ally', 'ship']);
+				} else if (actor.type === Actor.BASE) {
+					addActorToMinimap(actor, ['ally', 'base']);
+				}
+			});
+		}
+
+		if (others) {
+			others.forEach(function(actor) {
+				if (actor.type === Actor.SPACESHIP) {
+					addActorToMinimap(actor, ['enemy', 'ship']);
+				} else if (actor.type === Actor.BASE) {
+					addActorToMinimap(actor, ['enemy', 'base']);
+				}
+			});
+		}
+
+		function addActorToMinimap(actor, classes) {
+			var x = actor.x;
+			var y = actor.y;
+			var percentX = (x - minX)/mapWidth;
+			var percentY = (y - minY)/mapWidth;
+			var $rect = $('<div/>');
+			$rect.addClass('mapElement');
+			classes.forEach(function(name) {
+				$rect.addClass(name);
+			});
+			$rect.css('left', percentX*100 + '%');
+			$rect.css('top', percentY*100 + '%');
+			$('.minimap').append($rect);
+		}
     };
 
     // Scroll the world
-    var scrollEnabled = false;
+    var scrollEnabled = true;
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
