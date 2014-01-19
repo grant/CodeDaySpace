@@ -36,6 +36,7 @@ function World() {
                 type: type,
                 width: 100,
                 height: 100,
+                laserFired: false,
                 x: Math.random() * 500,
                 y: Math.random() * 500,
                 vx: 0,
@@ -70,7 +71,7 @@ function World() {
     }
 
     var serialize = function () {
-        return actors.reduce(function (cur, act) {            
+        return actors.reduce(function (cur, act) {
             return cur + String.fromCharCode(playerId, act.type) + act.serialize();
         }, "");
     };
@@ -135,10 +136,12 @@ function World() {
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
-            if (click.ctrl)
-                spawnLaser(act,[click.x,click.y]);
-            else
+            if (click.ctrl && !act.laserFired) {
+                act.laserFired = true;
+                spawnLaser(act, [click.x, click.y]);
+            } else {
                 act.goto(click);
+            }
         });
     };
 
@@ -205,6 +208,24 @@ function World() {
             });
         });
     };
+
+    // Used for minimap
+    function getActors() {
+        return {
+            other: otherActors,
+            yours: actors
+        };
+    };
+    function updateMinimap () {
+        var actors = getActors();
+        if (ui) {
+            ui.updateMinimap(actors);
+        }
+    }
+    window.setInterval(function () {
+        updateMinimap();
+    }, 50);
+
 
     this.offline = function () {
         playerId = 0;
