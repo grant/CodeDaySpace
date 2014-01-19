@@ -35,7 +35,6 @@ function World() {
 		vy: 0,
 		maxV: 1500,
 		maxA: 1000,
-		scale: 1,
         rotOffset: 180,
 		img: 'img/spaceship.png'
     }));
@@ -53,7 +52,6 @@ function World() {
 		maxV: 1500,
 		maxA: 1000,
 		rotOffset: 180,
-		scale: 1,
 		img: 'img/spaceship.png'
 	}));
 
@@ -78,11 +76,32 @@ function World() {
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
-        for (var i in uiEvent.click.selected) {
-			var index = uiEvent.click.selected[i];
-            var actor = actors[index];
-            actor.goto(click);
-		}
+        if (click.ctrl) { //ctrl key was held down
+            for (var i in click.selected) {
+                var index = uiEvent.click.selected[i];
+                var actor = actors[index];
+                var laser = new Spaceship({
+                    userId: actor.userId,
+                    actorId: 100, //MAKE THIS A RANDOM NUMBER!
+                    type: 'laser',
+                    width: 5,
+                    height: 50,
+                    x: actor.x,
+                    y: actor.y,
+                    v: 1000000,
+                    xdes: click[x],
+                    ydes: click[y],
+                    rotOffset: 180 + actor.rot,
+                    img: 'img/laser.png'
+                })
+            }
+        } else {
+            for (var i in uiEvent.click.selected) {
+                var index = uiEvent.click.selected[i];
+                var actor = actors[index];
+                actor.goto(click);
+            }
+        }
 	};
 
 	this.updateActors = function (ms) {
@@ -112,8 +131,4 @@ function World() {
 	window.setInterval(function(){
 		self.updateActors(ms);
 	}, ms);
-}
-
-function pushToServer() {
-    //tell the newtorking class what to push to the server
 }

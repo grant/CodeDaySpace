@@ -2,8 +2,8 @@ function Spaceship(params) {
     Actor.call(this,params);
 
     var self = this;
-    this.xdes = params.xdes || params.x || 0;
-    this.ydes = params.ydes || params.y || 0;
+    this.xdes = params.xdes || params.x + params.width * 0.5 || 0;
+    this.ydes = params.ydes || params.y + params.height * 0.5 || 0;
     this.vx = params.vx || 0;// x velocity
     this.vy = params.vy || 0;// y velocity
     this.maxV = params.maxV;
@@ -51,18 +51,15 @@ function Spaceship(params) {
         if (self.still > 2) {
             self.vx = 0;
             self.vy = 0;
-
         }
     };
 
     this.force = function (actors) {
         var forcex = 0;
         var forcey = 0;
-        //        var thisRadius = Math.sqrt(Math.pow(self.width * 0.5,2) + Math.pow(self.height*0.5,2));
         for (var i in actors) {
             curActor = actors[i];
             if (curActor.userId != self.userId || curActor.actorId != self.actorId) {
-                //                var curRadius = Math.sqrt(Math.pow(curActor.width * 0.5,2) + Math.pow(curActor.height*0.5,2));
                 var xToAdd = 1 / Math.exp((Math.abs(self.x - curActor.x) - self.width * 0.5 - curActor.width * 0.5) / 100);
                 if (curActor.x < self.x)
                     xToAdd *= -1;
@@ -86,5 +83,4 @@ function Spaceship(params) {
         self.xdes = point.x;
         self.ydes = point.y;
     };
-
 }
