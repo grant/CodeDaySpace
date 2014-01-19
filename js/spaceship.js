@@ -57,7 +57,7 @@ function Spaceship(params) {
             self.y += self.vy * deltaT / 10000;
         }
 
-        if ((Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 500) || (xdiff * xdiff + ydiff * ydiff > 50)) {
+        if ((Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 700) || (xdiff * xdiff + ydiff * ydiff > 50)) {
             self.still = 0;
         } else {
             self.still++;
@@ -72,7 +72,6 @@ function Spaceship(params) {
     this.closestBaddie = function (otherActors) {//returns an array [x,y] of the positions of the closet enemy spaceship
         var ans;
         var smallestDist;
-        typeof(smallestDist) === "undefined";
         otherActors.filter(function (act) {
             return (act.type == Actor.SPACESHIP);
         }).forEach(function (act) {
