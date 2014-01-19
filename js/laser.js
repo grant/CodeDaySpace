@@ -10,12 +10,13 @@ function Laser(params) {
     var xdiff = self.xdes - (self.x + 0.5 * self.width);
     var angle = Math.atan2(ydiff, xdiff);
     this.rot = 90 + angle * (180 / Math.PI);
-    this.dmg = params.damage;
+    this.dmg = params.damage || 40;
 
     this.vx = this.v * Math.cos(angle);
     this.vy = this.v * Math.sin(angle);
 
     this.update = function (deltaT, actors) {
+        self.frameLife--;
         self.x += self.vx * deltaT / 10000;
         self.y += self.vy * deltaT / 10000;
     };

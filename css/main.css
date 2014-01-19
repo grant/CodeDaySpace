@@ -36,6 +36,28 @@ body > div {
 	float: right;
 }
 
+.minimap {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 200px;
+	height: 200px;
+	margin: 10px;
+	background-color: gray;
+	overflow: hidden;
+	opacity: .5;
+}
+
+.mapElement {
+	position: absolute;
+	background-color: green;
+	width: 10px;
+	height: 10px;
+	margin-top: -5px;
+	margin-left: -5px;
+	opacity: .5;
+	border: 1px solid rgba(255, 255, 255, .8);
+}
 
 .ship {
 /*	transition: rotate .5s;
