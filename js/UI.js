@@ -35,12 +35,19 @@ function UI(world) {
 		} else {
 			self.selected = [];
 		}
+		// change select state UI
+		$spaceArea.children().removeClass('selected');
+		for (var i in self.selected) {
+			var index = self.selected[i];
+			$spaceArea.find('img').filter(function(i) {
+				return $(this).data('id') === index;
+			}).addClass('selected');
+		}
     }
 
     function rightClick (event) {
 		var x = event.clientX;
 		var y = event.clientY;
-		console.log(self.selected);
 		world.UIEvent({
 	        "click": {
 	            x: x,

@@ -36,7 +36,6 @@ function World() {
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
-        console.log(uiEvent.click.selected);
         for (var i in uiEvent.click.selected) {
             var actor = actors[i];
             actor.goto(click);

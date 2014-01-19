@@ -4,8 +4,8 @@ function Actor (params) {
     var self = this;
     this.width = params.width;
     this.height = params.height;
-    this.xdes = params.xdes || 0;
-    this.ydes = params.ydes || 0;
+    this.xdes = params.xdes || params.x || 0;
+    this.ydes = params.ydes || params.y || 0;
     this.userId = params.userId;
     this.actorId = params.actorId;
     this.type = params.type;
