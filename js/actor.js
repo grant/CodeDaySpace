@@ -2,6 +2,8 @@ var $spaceArea = $('.spaceArea');
 
 function Actor (params) {
     var self = this;
+    this.width = params.width;
+    this.height = params.height;
     this.xdes = params.xdes || 0;
     this.ydes = params.ydes || 0;
     this.userId = params.userId;
@@ -22,7 +24,7 @@ function Actor (params) {
     var createShip = function () {
         var $ship = $('<img/>');
         $ship.addClass(self.type);
-        $ship.attr('data-id', self.userId);
+        $ship.data('id', self.actorId);
         $ship.attr('src', self.img);
         $spaceArea.append($ship);
         return $ship;

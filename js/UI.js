@@ -1,6 +1,7 @@
 function UI(world) {
+	var self = this;
     var $spaceArea = $('.spaceArea');
-    var selected = [];
+    this.selected = [];
 
     document.oncontextmenu = function() {return false;};
 	$(document).mousedown(function(event){
@@ -12,17 +13,28 @@ function UI(world) {
 	});
 
 	$spaceArea.click(function(event) {
-		if (event.which === 3) { //right click
+	    if (event.which === 3) { //right click
 			rightClick(event);
 		}
 		if (event.which === 1) { //left click
-			leftClick(event);
-		    //determine which actor was clicked on
-            //select this actor
+		    leftClick(event);
 		}
     });
 
     function leftClick (event) {
+        var $clickedObj = $(event.target);
+        var actorId = $clickedObj.data("id");
+        var index = self.selected.indexOf(actorId);
+        var isImg = $clickedObj.prop('tagName') === 'IMG';
+        if (isImg) {
+	        if (index == -1) {
+	            self.selected.push(actorId);
+	            console.log("selected");
+	        } else {
+	            self.selected.splice(index, 1);
+	            console.log("deselected");
+	        }
+        }
     }
 
     function rightClick (event) {
@@ -31,7 +43,8 @@ function UI(world) {
 	    world.UIEvent({
 	        "click": {
 	            x: x,
-	            y: y
+	            y: y,
+	            selected: selected
 	        }
 	    });
     }
