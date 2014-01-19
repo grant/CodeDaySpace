@@ -135,6 +135,7 @@ function World() {
                     var acts = unpackActors(allData);
 
                     actors = acts.filter(function (act) { return act.userId == playerId; });
+                    otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
                     ui = new UI(self);
 
