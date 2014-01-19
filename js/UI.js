@@ -67,7 +67,8 @@ function UI(world) {
     }
 
     function updateResourceUI(data) {
-    	console.log(data);
+    	$('.minerals').html(data.minerals);
+    	$('.gas').html(data.gas);
     }
 
     // Scroll the world
