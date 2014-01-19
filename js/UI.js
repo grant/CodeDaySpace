@@ -231,13 +231,7 @@ function UI(world) {
 
     // Delete lazers
     window.setInterval(function () {
-        var $imgs = $spaceArea.find('img');
-        for (var i = 0; i < $imgs; ++i) {
-        	var $img = $imgs[i];
-        	if ($imgs.hasClass('laser')) {
-        		$img.remove();
-        	}
-        }
+        $('.spaceArea').find('img[src="img/laser1.png"]').remove()
     }, 10000);
 
 };
