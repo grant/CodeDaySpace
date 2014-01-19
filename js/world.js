@@ -36,6 +36,7 @@ function World() {
                 type: type,
                 width: 100,
                 height: 100,
+                laserFired: false,
                 x: Math.random() * 500,
                 y: Math.random() * 500,
                 vx: 0,
@@ -133,8 +134,10 @@ function World() {
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
-            if (click.ctrl)
-                spawnLaser(act,[click.x,click.y]);
+            if (click.ctrl && !act.laserFired) {
+                act.laserFired = true;
+                spawnLaser(act, [click.x, click.y]);
+            }
             else
                 act.goto(click);
         });

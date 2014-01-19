@@ -12,8 +12,21 @@ function Spaceship(params) {
     this.maxA = params.maxA || 1;
     this.still = 0;
     this.health = params.health || 100;
+    this.laserFired = false;
 
+    var cooldown= 25;
+    var timeSinceLaser = cooldown;
     this.update = function (deltaT, actors) {
+
+        if (this.laserFired) {
+            console.log(timeSinceLaser);
+            timeSinceLaser--;
+            if (timeSinceLaser == 0) {
+                timeSinceLaser = cooldown;
+                this.laserFired = false;
+            }
+        }        
+
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
         if (xdiff * xdiff + ydiff * ydiff < 50)
