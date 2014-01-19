@@ -9,7 +9,7 @@ function Laser(params) {
     var ydiff = self.ydes - (self.y + 0.5 * self.height);
     var xdiff = self.xdes - (self.x + 0.5 * self.width);
     var angle = Math.atan2(ydiff, xdiff);
-    this.rot = 90 + angle * (180 / Math.PI);
+    this.rot = params.rot || (90 + angle * (180 / Math.PI));
     this.dmg = params.damage || 40;
 
     this.vx = this.v * Math.cos(angle);
