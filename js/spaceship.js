@@ -8,42 +8,50 @@ function Spaceship(params) {
     this.vy = params.vy || 0;// y velocity
     this.maxV = params.maxV;
     this.maxA = params.maxA || 1;
-    this.angle = 0;
+    this.still = 0;
 
     this.update = function (deltaT, actors) {
-        self.x += self.vx * (deltaT / 1000);
-        self.y += -self.vy * (deltaT / 1000);
+        var ydiff = self.ydes - (self.y+0.5*self.height);
+        var xdiff = self.xdes - (self.x+0.5*self.width);
+        var angle = Math.atan2(xdiff, ydiff);
 
-        var ydiff = self.y - self.ydes;
-        var xdiff = self.xdes - self.x;
-        var angle = Math.atan2(ydiff, xdiff);
-
-        console.log(-(180 / Math.PI) * angle);
-        //determine total force due to other actors
         forces = this.force(actors);
         console.log(forces);
 
         // v accelerates in direction towards destination
-        self.vx += self.maxA * deltaT * Math.cos(angle);// + forces[0] * deltaT;
-        self.vy += self.maxA * deltaT * Math.sin(angle);// + forces[1] * deltaT;
-        if (self.vx > self.maxV) {
-            self.vx = self.maxV;
+        var deltaLen = xdiff * xdiff + ydiff * ydiff;
+        var acceleration = deltaLen * deltaT;
+        if (acceleration > self.maxA)
+            acceleration = self.maxA;
+        console.log(acceleration);
+
+        self.vx += xdiff * acceleration / deltaLen * deltaT;
+        self.vy += ydiff * acceleration / deltaLen * deltaT;
+
+        var vlen = Math.sqrt(self.vx * self.vx + self.vy * self.vy);
+        if (vlen > self.maxV){
+            self.vx = self.vx / vlen * self.maxV;
+            self.vy = self.vy / vlen * self.maxV;
         }
-        if (self.vy > self.maxV) {
-            self.vy = self.maxV;
-        }
-        self.angle = angle;
+
         self.rot = -(180 / Math.PI) * angle + self.rotOffset;
 
-        // if close
-        if (Math.sqrt(xdiff * xdiff + ydiff * ydiff) < 50) {
-            var minV = 1;
-            if (self.vx < minV) {
-                self.vx = 0;
-            }
-            if (self.vy < minV) {
-                self.vy = 0;
-            }
+        var prevPos = [self.x, self.y]; //position before updating
+        if (self.still < 2) {
+            self.x += self.vx * deltaT / 10000;
+            self.y += self.vy * deltaT / 10000;
+        }
+
+        if (Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 100 || xdiff*xdiff+ydiff*ydiff > 50 ){
+            self.still = 0 ;
+        } else {
+            self.still++;
+        }
+
+        if (self.still > 2) {
+            self.vx = 0;
+            self.vy = 0;
+
         }
     };
 

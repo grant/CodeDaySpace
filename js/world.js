@@ -14,9 +14,10 @@ function World() {
 		y: 50,
 		vx: 0,
 		vy: 0,
-		maxV: 100,
-		maxA: 2,
+		maxV: 1500,
+		maxA: 1000,
 		scale: 1,
+        rotOffset: 180,
 		img: 'img/spaceship.png'
     }));
     var id2 = 222;
@@ -30,8 +31,9 @@ function World() {
 		y: 350,
 		vx: 0,
 		vy: 0,
-		maxV: 100,
-		maxA: 2,
+		maxV: 1500,
+		maxA: 1000,
+		rotOffset: 180,
 		scale: 1,
 		img: 'img/spaceship.png'
 	}));

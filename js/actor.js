@@ -11,7 +11,7 @@ function Actor (params) {
     this.y = params.y || 0;
     this.img = params.img;
     this.rot = 0; // rotation in degrees
-    this.rotOffset = 90;
+    this.rotOffset = params.rotOffset || 0 ;
 
     this.serialize = function () {
         return {
@@ -34,7 +34,8 @@ function Actor (params) {
         $ship.data('id', self.actorId);
         $ship.attr('src', self.img);
         $ship.css("height",self.height);
-        $ship.css("width",self.width);
+        $ship.css("width", self.width);
+        $ship.css("position", "absolute");
         $spaceArea.append($ship);
         return $ship;
     };
