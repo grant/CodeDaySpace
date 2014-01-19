@@ -161,10 +161,22 @@ function UI(world) {
     });
 
     // Click on the minimap
-    $('.minimap').click(function(event) {
+    // var mouseDown = false;
+    // $('.minimap').mousemove(function(event) {
+    // 	if (mouseDown) {
+    // 		scrollMap(event);
+    // 	}
+    // });
+    // $(window).mouseup(function() {
+    // 	mouseDown = false;
+    // });
+    $('.minimap').mousedown(function(event) {
+    	scrollMap(event);
+    });
+
+    function scrollMap (event) {
     	var x = event.offsetX;
     	var y = event.offsetY;
-    	console.log(x);
     	var percentX = x/$('.minimap').width() - .5;
     	var percentY = y/$('.minimap').height() - .5;
 
@@ -175,9 +187,7 @@ function UI(world) {
 		var minY = currMapY - (mapWidth/2);
 		var maxY = currMapY + (mapWidth/2);
 
-		console.log(percentX);
-
 		$spaceArea.css('left', currMapX - percentX*mapWidth + 'px');
 		$spaceArea.css('top', currMapY - percentY*mapHeight + 'px');
-    });
+    }
 };
