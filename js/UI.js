@@ -1,5 +1,6 @@
 function UI(world) {
     var self = this;
+    var scrollEnabled = true;
     var $spaceArea = $('.spaceArea');
     var $viewFrame = $('.viewFrame');
     this.selected = [];
@@ -14,7 +15,12 @@ function UI(world) {
     });
 
     $(document).keypress(function (event) {
-        world.spawnShip();
+		// if press space
+    	if (event.charCode === 32) {
+    		scrollEnabled = !scrollEnabled;
+    	} else {
+	        world.spawnShip();
+    	}
     });
 
     $viewFrame.click(function (event) {
@@ -127,7 +133,6 @@ function UI(world) {
     };
 
     // Scroll the world
-    var scrollEnabled = true;
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
@@ -163,14 +168,6 @@ function UI(world) {
     $('.viewFrame').mousemove(function (event) {
     	mouseX = event.clientX;
     	mouseY = event.clientY;
-    });
-
-    // Toggle scrolling
-    $(window).keypress(function(event) {
-		// if press space
-    	if (event.charCode === 32) {
-    		scrollEnabled = !scrollEnabled;
-    	}
     });
 
     // Click on the minimap
