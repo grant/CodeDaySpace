@@ -273,14 +273,14 @@ function World() {
     };
 
     // Used for minimap
-    function getActors() {
+    this.getActors = function() {
         return {
             other: otherActors,
             yours: actors
         };
     };
     function updateMinimap () {
-        var actors = getActors();
+        var actors = self.getActors();
         if (ui) {
             ui.updateMinimap(actors);
         }

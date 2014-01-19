@@ -16,6 +16,7 @@ function Spaceship(params) {
 
     var cooldown= 15;
     var timeSinceLaser = cooldown;
+    this.dom.addClass('ship');
 
     this.update = function (deltaT, actors) {
         if (this.laserFired) {
@@ -24,7 +25,7 @@ function Spaceship(params) {
                 timeSinceLaser = cooldown;
                 this.laserFired = false;
             }
-        }        
+        }
 
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
@@ -76,7 +77,7 @@ function Spaceship(params) {
         actors.filter(function (act) {
             return (act.type == Actor.LASER) && (act.frameLife <= 0);
         }).forEach(function (act) {
-            
+
         });
 
 
