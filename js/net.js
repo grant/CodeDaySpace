@@ -67,13 +67,20 @@ var Network = function (cBack) {
 
     this.login = function (plName, cBack) {
         WSPromise(ws, String.fromCharCode(0) + plName, function (data) {
+            userId = data.charCodeAt(0) * 256 + data.charCodeAt(1);
             if (cBack)
-                cBack(data.charCodeAt(0) * 256 + data.charCodeAt(1));
+                cBack(userId);
         });
+    };
+
+
+    var packShort = function (num) {
+        return String.fromCharCode(Math.floor(num / 256), num % 256);
     };
 
     this.pushPull = function (data, cBack) {
         WSPromise(ws, String.fromCharCode(4) + packShort(userId) + data, function (dt) {
+            console.log("receiveing: " + dt);
             if (cBack)
                 cBack(dt);
         });

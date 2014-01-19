@@ -12,11 +12,13 @@ function UI(world) {
 		return true;
 	});
 
-
+	$(document).keypress(function (event) {
+	    world.spawnShip();
+	});
 
 	$spaceArea.click(function(event) {
 	    if (event.which === 3) { //right click
-	        rightClick(event);
+			rightClick(event);
 		}
 		if (event.which === 1) { //left click
 		    leftClick(event);
@@ -50,13 +52,12 @@ function UI(world) {
     function rightClick (event) {
 		var x = event.clientX;
 		var y = event.clientY;
-        world.UIEvent({
-            "click": {
-		        x: x,
-		        y: y,
-		        selected: self.selected,
-                ctrl: event.ctrlKey
-            }
-		});
+		world.UIEvent({
+	        "click": {
+	            x: x,
+	            y: y,
+	            selected: self.selected
+	        }
+	    });
     }
 }

@@ -25,7 +25,8 @@ function Actor (params) {
         $ship.data('id', self.actorId);
         $ship.attr('src', self.img);
         $ship.css("height",self.height);
-        $ship.css("width",self.width);
+        $ship.css("width", self.width);
+        $ship.css("position", "absolute")
         $spaceArea.append($ship);
         return $ship;
     };
@@ -40,13 +41,13 @@ function Actor (params) {
     this.dom = createActor();
 
     this.serialize = function () {
-        return Helpers.packFloat(this.x) +
-            Helpers.packFloat(this.y) +
-            Helpers.packFloat(this.width) +
-            Helpers.packFloat(this.height) +
-            Helpers.packFloat(this.rot + this.rotOffset) +
-            Helpers.packInt(this.img.length) +
-            this.img;
+        return (Helpers.packFloat(self.x) +
+            Helpers.packFloat(self.y) +
+            Helpers.packFloat(self.width) +
+            Helpers.packFloat(self.height) +
+            Helpers.packFloat(self.rot + self.rotOffset) +
+            Helpers.packInt(self.img.length) +
+            self.img);
     };
 }
 
