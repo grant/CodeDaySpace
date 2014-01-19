@@ -1,7 +1,26 @@
+/// <reference path="net.js" />
 // var actors = new
 function World() {
 	var self = this;
     //initialization: initalize networking class
+	var ui;
+	var playerId;
+	var players;
+	var hasConnected = false;
+	var conCback;
+	this.onconnected = function (cBack) {
+	    if (hasConnected)
+	        cBack();
+	    else
+	        conCback = cBack;
+	};
+	var net = new Network(function () {
+	    hasConnected = true;
+	    if (conCback != null)
+	        conCback();
+	});
+
+	var otherActos = [];
 	var actors = {};
 	var id1 = 111;
     actors[id1]=(new Spaceship({
@@ -49,7 +68,12 @@ function World() {
 				world.actors[id] = actors[id].serialize();
 			}
 		}
-		return world;
+		return JSON.stringify(world);
+	};
+
+	this.deserialize = function (data) {
+	    var acts = JSON.parse(data);
+
 	};
 
     this.UIEvent = function (uiEvent) {
@@ -67,6 +91,20 @@ function World() {
 			actor.update(ms,actors);
 			actor.repaint();
 		}
+		net.pushPull(self.serialize, function (data) {
+		    self.deserialize(data);
+		});
+	};
+
+	this.login = function (name, cBack) {
+	    net.login(name, function (plId) {
+	        playerId = plId;
+	        net.getPlayers(function (pls) {
+	            players = pls;
+	            ui = new UI(self);
+	            cBack();
+	        });
+	    });
 	};
 
 	// KEEP AT END
