@@ -5,7 +5,11 @@
 }
 
 .ship {
+	transition: rotate .5s;
+	-webkit-transition: -webkit-transform .5s linear;
 	position: absolute;
+	margin-top: -50px;
+	margin-left: -50px;
 	width: 100px;
 	height: 100px;
 }

@@ -11,9 +11,12 @@ function Actor (params) {
     this.y = params.y || 0;
     this.vx = params.vx || 0;// x velocity
     this.vy = params.vy || 0;// y velocity
+    this.maxV = params.maxV;
+    this.maxA = params.a;
     this.img = params.img;
     this.size = params.size;
     this.rot = 0; // rotation in degrees
+    this.rotOffset = 90;
 
     var createShip = function () {
         var $ship = $('<img/>');
@@ -26,15 +29,24 @@ function Actor (params) {
     this.update = function (deltaT) {
         self.x += self.vx * (deltaT/1000);
         self.y += -self.vy * (deltaT/1000);
+
+        if (self.getV() < self.maxV) {
+            // self
+        }
+        // if close
+        // if (Math.sqrt()) {}
     };
 
     this.repaint = function () {
         self.dom.css('left', self.x);
         self.dom.css('top', self.y);
-        console.log(self.rot);
         var rotText = 'rotate('+self.rot+'deg)';
         self.dom.css('transform', rotText);
     };
+
+    this.getV = function () {
+        return Math.sqrt(self.vx * self.vx + self.vy * self.vy);
+    }
 
     this.goto = function (point) {
         self.xdes = point.x;
@@ -45,7 +57,7 @@ function Actor (params) {
         var angle = Math.atan2(ydiff, xdiff);
         var vx = velocityLength * Math.cos(angle);
         var vy = velocityLength * Math.sin(angle);
-        self.rot = (180/Math.PI) * angle;
+        self.rot = -(180/Math.PI) * angle + self.rotOffset;
         self.vx = vx;
         self.vy = vy;
     };
