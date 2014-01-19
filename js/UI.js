@@ -189,5 +189,11 @@ function UI(world) {
 
 		$spaceArea.css('left', currMapX - percentX*mapWidth + 'px');
 		$spaceArea.css('top', currMapY - percentY*mapHeight + 'px');
+		self.centerTo(0, 0);
     }
+
+    this.centerTo = function(x, y) {
+		$spaceArea.css('left', x);
+		$spaceArea.css('top', y - $(window).height()/2);
+    };
 };
