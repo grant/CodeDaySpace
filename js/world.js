@@ -17,7 +17,7 @@ function World() {
         var id = 0;
         while (actors.filter(function (act) { return act.actorId == id; }).length > 0) 
             id++;
-        actor.actorId = id;
+        actor.setId(id);
         actors.push(actor);
     };
 

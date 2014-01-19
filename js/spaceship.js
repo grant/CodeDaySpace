@@ -16,7 +16,7 @@ function Spaceship(params) {
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
         if (xdiff * xdiff + ydiff * ydiff < 50)
-            return
+            return;
 
         var angle = Math.atan2(xdiff, ydiff);
 
