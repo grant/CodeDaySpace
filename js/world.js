@@ -126,7 +126,7 @@ function World() {
 
     this.updateActors = function (ms) {
         actors = actors.filter(function (act) {
-            return (act.type == Actor.LASER) && (act.frameLife < 0);
+            return (act.type != Actor.LASER) || (act.frameLife >= 0);
         });
         actors.forEach(function (act) {
             act.update(ms, actors); 
