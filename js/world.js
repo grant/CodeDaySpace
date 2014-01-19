@@ -32,7 +32,7 @@ function World() {
 		maxA: 10,
 		scale: 1,
 		img: 'img/spaceship.png'
-     }));
+	}));
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
