@@ -29,73 +29,56 @@ function Spaceship(params) {
 
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
-        if (xdiff * xdiff + ydiff * ydiff < 50)
-            return;
+        if (xdiff * xdiff + ydiff * ydiff < 3) {
+            self.vx = 0;
+            self.vy = 0;
+        } else if (xdiff * xdiff + ydiff * ydiff < 50) {
+            self.vx /= 2;
+            self.vy /= 2;
+        } else {
 
-        var angle = Math.atan2(xdiff, ydiff);
-        //forces = this.force(actors);
+            var angle = Math.atan2(xdiff, ydiff);
+            //forces = this.force(actors);
 
-        // v accelerates in direction towards destination
-        var deltaLen = xdiff * xdiff + ydiff * ydiff;
-        var acceleration = deltaLen * deltaT;
-        if (acceleration > self.maxA)
-            acceleration = self.maxA;
+            // v accelerates in direction towards destination
+            var deltaLen = xdiff * xdiff + ydiff * ydiff;
+            var acceleration = deltaLen * deltaT;
+            if (acceleration > self.maxA)
+                acceleration = self.maxA;
 
-        self.vx += xdiff * acceleration / deltaLen * deltaT;
-        self.vy += ydiff * acceleration / deltaLen * deltaT;
+            self.vx += xdiff * acceleration / deltaLen * deltaT;
+            self.vy += ydiff * acceleration / deltaLen * deltaT;
 
-        var vlen = Math.sqrt(self.vx * self.vx + self.vy * self.vy);
-        if (vlen > self.maxV) {
-            self.vx = self.vx / vlen * self.maxV;
-            self.vy = self.vy / vlen * self.maxV;
+            var vlen = Math.sqrt(self.vx * self.vx + self.vy * self.vy);
+            if (vlen > self.maxV) {
+                self.vx = self.vx / vlen * self.maxV;
+                self.vy = self.vy / vlen * self.maxV;
+            }
         }
-
         self.rot = -(180 / Math.PI) * angle + self.rotOffset;
 
         var prevPos = [self.x, self.y]; //position before updating
-        if (self.still < 2) {
-            self.x += self.vx * deltaT / 10000;
-            self.y += self.vy * deltaT / 10000;
-        }
-
+            
         if ((Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 700) || (xdiff * xdiff + ydiff * ydiff > 50)) {
             self.still = 0;
         } else {
             self.still++;
         }
 
-        if (self.still > 2) {
+        if (self.still < 20000000000000) {
+            self.x += self.vx * deltaT / 10000;
+            self.y += self.vy * deltaT / 10000;
+        } else {
             self.vx = 0;
             self.vy = 0;
         }
     };
 
     this.force = function (actors) {
-        var forcex = 0;
-        var forcey = 0;
-        //        var thisRadius = Math.sqrt(Math.pow(self.width * 0.5,2) + Math.pow(self.height*0.5,2));
-        actors.filter(function (act) {
-            return (act.type == Actor.LASER) && (act.frameLife <= 0);
-        }).forEach(function (act) {
-
-        });
-
-
-        for (var i in actors) {
-            curActor = actors[i];
-            if (curActor.userId != self.userId || curActor.actorId != self.actorId) {
-                //                var curRadius = Math.sqrt(Math.pow(curActor.width * 0.5,2) + Math.pow(curActor.height*0.5,2));
-                var xToAdd = 1 / Math.exp((Math.abs(self.x - curActor.x) - self.width * 0.5 - curActor.width * 0.5) / 100);
-                if (curActor.x < self.x)
-                    xToAdd *= -1;
-                var yToAdd = 1 / Math.exp((Math.abs(self.y - curActor.y) - self.height * 0.5 - curActor.height * 0.5) / 100);
-                if (curActor.y < self.y)
-                    yToAdd *= -1;
-                forcex += xToAdd;
-                forcey += yToAdd;
-            }
-        }
-        return [forcex, forcey];
+        return actors.reduce(function (cur, act) {
+            var dis = Math.sqrt((act.x - self.x) * (act.x - self.x) + (act.y - self.y) * (act.y - self.y));
+            
+        }, [0, 0]);
     };
 
     var parentSer = this.serialize;
@@ -113,7 +96,7 @@ function Spaceship(params) {
 
 
     this.goto = function (point) {
-        var randomScale = 50;
+        var randomScale = 300;
         var randx = Math.random() * randomScale - (randomScale/2);
         var randy = Math.random() * randomScale - (randomScale/2);
 

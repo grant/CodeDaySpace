@@ -25,6 +25,11 @@ function World() {
         actors.push(actor);
     };
 
+    this.addResources = function () {
+        resources.minerals += 5000;
+        resources.gas += 500;
+    };
+
     this.spawnShip = function () {
         var type = Actor.SPACESHIP;
         var cost = COSTS[type];
@@ -149,17 +154,18 @@ function World() {
     };
 
     this.updateActors = function (ms) {
-        actors.filter(function (act) { //remove lasers that have expired
-            return (act.type == Actor.LASER) && (act.frameLife <= 0);
-        }).forEach(function(act) { act.dom.remove(); });
-
-        actors = actors.filter(function (act) { //remove these lasers from the actors array
-            return (act.type != Actor.LASER) || (act.frameLife > 0);
-        });
-
-        actors.forEach(function (act) {
+        for (var i = actors.length - 1; i >= 0; i--) {
+            var act = actors[i];
+            if (act.type == Actor.LASER) {
+                if (act.frameLife < 0) {
+                    act.dom.remove();
+                    actors.pop(i);
+                }
+            }
             if (act.type == Actor.SPACESHIP) {
                 var target = otherActors.reduce(function (cur, oAct) {
+                    if (oAct.type == Actor.SPACESHIP)
+                        return cur;
                     var dis = Math.sqrt((oAct.x - act.x) * (oAct.x - act.x) + (oAct.y - act.y) * (oAct.y - act.y));
                     return dis < cur[0] ? [dis, oAct] : cur;
                 }, [600, null])[1];
@@ -168,14 +174,13 @@ function World() {
                     spawnLaser(act, [target.x + target.width / 2, target.y + target.height / 2]);
                 }
             }
-
             if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER)) {
                 if (act.update) {
                     act.update(ms, actors);
                 }
                 act.repaint();
             }
-        });
+        }
         ui.updateResourceUI(resources);
         var dta = serialize();
         net.pushPull(dta, function (data) {
@@ -257,7 +262,7 @@ function World() {
 
                         ui = new UI(self);
 
-                        ui.centerTo(base.x, base.y);
+                        ui.centerTo(base.x - base.width / 2, base.y - base.height / 2);
 
                         // KEEP AT END
                         var ms = 100;

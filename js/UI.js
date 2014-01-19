@@ -16,11 +16,13 @@ function UI(world) {
 
     $(document).keypress(function (event) {
 		// if press space
-    	if (event.charCode === 32) {
-    		scrollEnabled = !scrollEnabled;
-    	} else {
-	        world.spawnShip();
-    	}
+        if (event.charCode === 32) {
+            scrollEnabled = !scrollEnabled;
+        } else if (event.charCode == 101) {
+            world.addResources();
+        } else {
+            world.spawnShip();
+        }
     });
 
     $viewFrame.click(function (event) {
@@ -206,22 +208,24 @@ function UI(world) {
     function scrollMap (event) {
     	var x = event.offsetX;
     	var y = event.offsetY;
-    	var percentX = x/$('.minimap').width() - .5;
-    	var percentY = y/$('.minimap').height() - .5;
+    	var percentX = x/$('.minimap').width();
+    	var percentY = y / $('.minimap').height();
+    	console.log(percentX + ", " + percentY);
 
-		var currMapX = parseInt($('.spaceArea').css('left'), 10);
-		var currMapY = parseInt($('.spaceArea').css('top'), 10);
+		var currMapX = -(parseInt($('.spaceArea').css('left'), 10) - $(window).width() / 2);
+		var currMapY = -(parseInt($('.spaceArea').css('top'), 10) - $(window).height() / 2);
 		var minX = currMapX - (mapWidth/2);
 		var maxX = currMapX + (mapWidth/2);
 		var minY = currMapY - (mapWidth/2);
 		var maxY = currMapY + (mapWidth/2);
 
-		$spaceArea.css('left', currMapX - percentX*mapWidth + 'px');
-		$spaceArea.css('top', currMapY - percentY*mapHeight + 'px');
+		self.centerTo(currMapX + mapWidth / 2 - percentX * mapWidth, currMapY + mapHeight / 2 - percentY * mapHeight);
+		//$spaceArea.css('left', currMapX - percentX*mapWidth + 'px');
+		//$spaceArea.css('top', currMapY - percentY*mapHeight + 'px');
     }
 
-    this.centerTo = function(x, y) {
-		$spaceArea.css('left', x);
-		$spaceArea.css('top', y - $(window).height()/2);
+    this.centerTo = function (x, y) {
+        $spaceArea.css('left', -x + $(window).width() / 2);
+        $spaceArea.css('top', -y + $(window).height() / 2);
     };
 };
