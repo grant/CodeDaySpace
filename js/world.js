@@ -2,7 +2,7 @@
 /// <reference path="actor.js" />
 /// <reference path="spaceship.js" />
 /// <reference path="resources.js" />
-/// <reference path="world.js" />
+/// <reference path="ui.js" />
 // var actors = new
 function World() {
     var self = this;
@@ -213,7 +213,7 @@ function World() {
                                     }
                                     return cur;
                                 }, 999999);
-                                return minD > 2000;
+                                return minD > 700;
                             };
 
                             var genLoc = function (acts) {
@@ -250,9 +250,12 @@ function World() {
                             resources = res[0];
                             base = actors.filter(function (act) { return act.type == Actor.BASE; })[0];
                         }
+                        
                         otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
                         ui = new UI(self);
+
+                        ui.centerTo(base.x, base.y);
 
                         // KEEP AT END
                         var ms = 100;
