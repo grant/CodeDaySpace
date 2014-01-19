@@ -1,5 +1,6 @@
 function UI(world) {
     var self = this;
+    var scrollEnabled = true;
     var $spaceArea = $('.spaceArea');
     var $viewFrame = $('.viewFrame');
     this.selected = [];
@@ -14,7 +15,12 @@ function UI(world) {
     });
 
     $(document).keypress(function (event) {
-        world.spawnShip();
+		// if press space
+    	if (event.charCode === 32) {
+    		scrollEnabled = !scrollEnabled;
+    	} else {
+	        world.spawnShip();
+    	}
     });
 
     $viewFrame.click(function (event) {
@@ -38,7 +44,12 @@ function UI(world) {
                 self.selected.splice(index, 1);
             }
         } else {
-            self.selected = [];
+        	// Don't unselect if using hashmap
+		    var winWid = $(window).width();
+		    var winHei = $(window).height();
+        	if (!(mouseX > winWid - 200 && mouseY > winHei - 200)) {
+	            self.selected = [];
+	        }
         }
         // change select state UI
         $spaceArea.children().removeClass('selected');
@@ -122,7 +133,6 @@ function UI(world) {
     };
 
     // Scroll the world
-    var scrollEnabled = true;
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
@@ -172,6 +182,8 @@ function UI(world) {
     // });
     $('.minimap').mousedown(function(event) {
     	scrollMap(event);
+    	event.preventDefault();
+    	return false;
     });
 
     function scrollMap (event) {
