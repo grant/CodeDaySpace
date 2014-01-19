@@ -73,8 +73,7 @@ function World() {
     };
 
     var serialize = function () {
-        return actors.reduce(function (cur, act) {
-            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
+        return actors.reduce(function (cur, act) {            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
         }, "");;
     };
 
@@ -111,9 +110,9 @@ function World() {
     };
 
     this.updateActors = function (ms) {
-        actors.forEach(function (act) { 
-            act.update(ms, actors); 
-            act.repaint(); 
+        actors.forEach(function (act) {
+            act.update(ms, actors);
+            act.repaint();
             if (act.type == "laser" && act.frameLife < 0) {
                 //delete the laser
             }
