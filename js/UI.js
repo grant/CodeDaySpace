@@ -80,7 +80,7 @@ function UI(world) {
     };
 
     // Scroll the world
-    var scrollEnabled = false;
+    var scrollEnabled = true;
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
