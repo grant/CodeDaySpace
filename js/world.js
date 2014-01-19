@@ -22,7 +22,7 @@ function World() {
     };
 
     this.spawnShip = function () {
-        newShip = new Spaceship({
+        var newShip = new Spaceship({
             userId: playerId,
             type: 0,
             width: 100,
@@ -38,20 +38,20 @@ function World() {
         self.addActor(newShip);
     };
 
-    var spawnLaser = function (actor) {
-        newLaser = new Laser({
-            width: 10,
+    var spawnLaser = function (actor,p) {
+        var newLaser = new Laser({
+            width: 5,
             height: 50,
             userId: actor.userId,
             type: Actor.LASER,
-            x: actor.x,
-            y: actor.y,
+            x: actor.x+0.5*actor.width,
+            y: actor.y + 0.5 * actor.height,
             img: 'img/laser.png',
             rot: actor.rot,
-            rotOffset: 180,
-            v: 100000,
-            xdes: actor.xdes,
-            ydes: actor.ydes,
+            rotOffset: 150,
+            v: 10000,
+            xdes: p[0],
+            ydes: p[1],
             frameLife: 5
         });
         self.addActor(newLaser);
@@ -94,16 +94,21 @@ function World() {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
             if (click.ctrl) 
-                spawnLaser(act);
+                spawnLaser(act,[click.x,click.y]);
             else
                 act.goto(click);
         });
     };
 
     this.updateActors = function (ms) {
+        actors.filter(function (act) {
+            return (act.type == Actor.LASER) && (act.frameLife <= 0);
+        }).forEach(function(act) { act.dom.remove(); });
+
         actors = actors.filter(function (act) {
-            return (act.type != Actor.LASER) || (act.frameLife >= 0);
+            return (act.type != Actor.LASER) || (act.frameLife > 0);
         });
+
         actors.forEach(function (act) {
             act.update(ms, actors);
             act.repaint();

@@ -29,6 +29,7 @@ function Actor (params) {
         return $ship;
     };
 
+
     this.setId = function (id) {
         self.dom.data('id', this.actorId = id);
     };
