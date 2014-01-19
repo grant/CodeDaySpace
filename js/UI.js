@@ -38,7 +38,12 @@ function UI(world) {
                 self.selected.splice(index, 1);
             }
         } else {
-            self.selected = [];
+        	// Don't unselect if using hashmap
+		    var winWid = $(window).width();
+		    var winHei = $(window).height();
+        	if (!(mouseX > winWid - 200 && mouseY > winHei - 200)) {
+	            self.selected = [];
+	        }
         }
         // change select state UI
         $spaceArea.children().removeClass('selected');
@@ -172,6 +177,8 @@ function UI(world) {
     // });
     $('.minimap').mousedown(function(event) {
     	scrollMap(event);
+    	event.preventDefault();
+    	return false;
     });
 
     function scrollMap (event) {
