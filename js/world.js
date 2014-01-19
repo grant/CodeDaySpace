@@ -38,14 +38,15 @@ function World() {
             (resources.gas >= cost.gas)) {
             resources.minerals -= cost.minerals;
             resources.gas -= cost.gas;
+            var spawnSize = 1000;
             var newShip = new Spaceship({
                 userId: playerId,
                 type: type,
                 width: 100,
                 height: 100,
                 laserFired: false,
-                x: Math.random() * 500 - 250 + base.x,
-                y: Math.random() * 500 - 250 + base.y,
+                x: Math.random() * spawnSize - spawnSize/2 + base.x,
+                y: Math.random() * spawnSize - spawnSize/2 + base.y,
                 vx: 0,
                 vy: 0,
                 maxV: 1500,
@@ -257,7 +258,7 @@ function World() {
                             resources = res[0];
                             base = actors.filter(function (act) { return act.type == Actor.BASE; })[0];
                         }
-                        
+
                         otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
                         ui = new UI(self);

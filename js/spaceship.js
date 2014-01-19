@@ -32,7 +32,8 @@ function Spaceship(params) {
         if (xdiff * xdiff + ydiff * ydiff < 3) {
             self.vx = 0;
             self.vy = 0;
-        } else if (xdiff * xdiff + ydiff * ydiff < 50) {
+            return;
+        } else if (xdiff * xdiff + ydiff * ydiff < 150) {
             self.vx /= 2;
             self.vy /= 2;
         } else {
@@ -58,7 +59,7 @@ function Spaceship(params) {
         self.rot = -(180 / Math.PI) * angle + self.rotOffset;
 
         var prevPos = [self.x, self.y]; //position before updating
-            
+
         if ((Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 700) || (xdiff * xdiff + ydiff * ydiff > 50)) {
             self.still = 0;
         } else {
@@ -77,7 +78,7 @@ function Spaceship(params) {
     this.force = function (actors) {
         return actors.reduce(function (cur, act) {
             var dis = Math.sqrt((act.x - self.x) * (act.x - self.x) + (act.y - self.y) * (act.y - self.y));
-            
+
         }, [0, 0]);
     };
 

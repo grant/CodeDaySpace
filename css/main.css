@@ -55,8 +55,8 @@ body > div {
 	position: absolute;
 	right: 0;
 	bottom: 0;
-	width: 200px;
-	height: 200px;
+	width: 300px;
+	height: 300px;
 	margin: 10px;
 	background-color: gray;
 	overflow: hidden;
@@ -66,19 +66,19 @@ body > div {
 .mapElement {
 	pointer-events: none;
 	position: absolute;
-	width: 10px;
-	height: 10px;
-	margin-top: -5px;
-	margin-left: -5px;
+	width: 20px;
+	height: 20px;
+	margin-top: -10px;
+	margin-left: -10px;
 	opacity: .5;
 	border: 1px solid rgba(255, 255, 255, .8);
 }
 
 .mapElement.base {
-	width: 20px;
-	height: 20px;
-	margin-top: -10px;
-	margin-left: -10px;
+	width: 40px;
+	height: 40px;
+	margin-top: -20px;
+	margin-left: -20px;
 }
 
 .mapElement.ally {

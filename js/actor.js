@@ -25,6 +25,10 @@ function Actor (params) {
         $ship.css("width", self.width);
         $ship.css("position", "absolute")
         $spaceArea.append($ship);
+
+        if (self.type === Actor.LASER) {
+            $ship.addClass('laser');
+        }
         return $ship;
     };
 

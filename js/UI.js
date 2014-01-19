@@ -101,8 +101,8 @@ function UI(world) {
         $('.gas .data').html(data.gas);
     };
 
-    var mapWidth = 10000;
-    var mapHeight = 10000;
+    var mapWidth = 3000;
+    var mapHeight = 3000;
     this.updateMinimap = function (actors) {
 		var others = actors.others;
 		var yours = actors.yours;
@@ -228,4 +228,16 @@ function UI(world) {
         $spaceArea.css('left', -x + $(window).width() / 2);
         $spaceArea.css('top', -y + $(window).height() / 2);
     };
+
+    // Delete lazers
+    window.setInterval(function () {
+        var $imgs = $spaceArea.find('img');
+        for (var i = 0; i < $imgs; ++i) {
+        	var $img = $imgs[i];
+        	if ($imgs.hasClass('laser')) {
+        		$img.remove();
+        	}
+        }
+    }, 10000);
+
 };
