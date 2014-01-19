@@ -24,35 +24,6 @@ function World() {
 
     var otherActors = [];
     var actors = [];
-    //var actors = [new Spaceship({
-    //    userId: 'grant',
-    //    actorId: 1,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 50,
-    //    y: 50,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //}), new Spaceship({
-    //    userId: 'alex',
-    //    actorId: 2,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 550,
-    //    y: 350,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //})];
 
     this.spawnShip = function () {
         actors.push(new Spaceship({
@@ -117,7 +88,7 @@ function World() {
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
-            if (click.ctrl) 
+            if (click.ctrl)
                 spawnLaser([act.xdes, act.ydes]);
             else
                 act.goto(click);
@@ -129,8 +100,8 @@ function World() {
             return (act.type != Actor.LASER) || (act.frameLife >= 0);
         });
         actors.forEach(function (act) {
-            act.update(ms, actors); 
-            act.repaint(); 
+            act.update(ms, actors);
+            act.repaint();
         });
         var dta = serialize();
         net.pushPull(dta, function (data) {
@@ -167,4 +138,17 @@ function World() {
             });
         });
     };
-}
+
+    this.offline = function () {
+        playerId = 0;
+        players = [{ name: "sda", id: 0 }];
+        ui = new UI(self);
+        var ms = 100;
+        window.setInterval(function () {
+            self.updateActors(ms);
+        }, ms);
+        net = {
+            pushPull: function (data, cBack) { cBack(""); }
+        };
+    };
+};

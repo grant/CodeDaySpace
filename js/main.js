@@ -15,4 +15,11 @@ $(function () {
             $("#gameDiv").show();
         });
     });
+
+    $("#offlineBut").click(function () {
+        console.log("hello");
+        world.offline();
+        $("#loginDiv").hide();
+        $("#gameDiv").show();
+    });
 });

@@ -16,7 +16,7 @@ methods:
 
 
 
-var SOCKET_SERVER_URL = "ws://" + window.location.host + ":999";
+var SOCKET_SERVER_URL = "ws://" + window.location.hostname + ":999";
 //var SOCKET_SERVER_URL = "ws://10.50.138.71:999";
 
 var Network = function (cBack) {
