@@ -13,6 +13,7 @@ function Actor (params) {
     this.vy = params.vy || 0;// y velocity
     this.img = params.img;
     this.size = params.size;
+    this.rot = 0; // rotation in degrees
 
     var createShip = function () {
         var $ship = $('<img/>');
@@ -30,6 +31,9 @@ function Actor (params) {
     this.repaint = function () {
         self.dom.css('left', self.x);
         self.dom.css('top', self.y);
+        console.log(self.rot);
+        var rotText = 'rotate('+self.rot+'deg)';
+        self.dom.css('transform', rotText);
     };
 
     this.goto = function (point) {
@@ -41,6 +45,7 @@ function Actor (params) {
         var angle = Math.atan2(ydiff, xdiff);
         var vx = velocityLength * Math.cos(angle);
         var vy = velocityLength * Math.sin(angle);
+        self.rot = (180/Math.PI) * angle;
         self.vx = vx;
         self.vy = vy;
     };
