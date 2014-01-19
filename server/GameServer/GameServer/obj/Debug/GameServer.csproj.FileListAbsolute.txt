@@ -1,0 +1,9 @@
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\GameServer.exe.config
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\obj\Debug\GameServer.csprojResolveAssemblyReference.cache
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\GameServer.exe
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\GameServer.pdb
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\obj\Debug\GameServer.exe
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\obj\Debug\GameServer.pdb
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\Alchemy.dll
+c:\users\user\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\Alchemy.pdb
+C:\Users\User\documents\visual studio 2013\Projects\GameServer\GameServer\bin\Debug\log4net.dll
