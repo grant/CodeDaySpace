@@ -36,14 +36,16 @@ function World() {
 
 	this.serialize = function () {
 		var world = {
-			actors: {};
+			actors: {}
 		};
-		for (var i in actors) {
+		for (var id in actors) {
+			var actor = actors[id];
 			var notUsers = true;
 			if (notUsers) {
-				console.log('hi');
+				world.actors[id] = actors[id].serialize();
 			}
 		}
+		return world;
 	};
 
     this.UIEvent = function (uiEvent) {
@@ -68,6 +70,7 @@ function World() {
 	window.setInterval(function(){
 		self.updateActors(ms);
 	}, ms);
+	console.log(JSON.stringify(self.serialize()));
 }
 
 function pushToServer() {
