@@ -123,6 +123,6 @@ Spaceship.deserialize = function (data, ind) {
     var params = Actor.deserialize(data, ind);
     params.maxV = Helpers.parseFloat(data, ind);
     params.maxA = Helpers.parseFloat(data, ind);
-    param.health = Helpers.parseFloat(data, ind);
+    params.health = Helpers.parseFloat(data, ind);
     return params;
 };

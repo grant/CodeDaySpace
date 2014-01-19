@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body > div {
     width: 100%;
     height: 100%;
@@ -18,6 +22,19 @@ body > div {
 	background-color: black;
 	overflow: hidden;
 }
+
+.header {
+	position: absolute;
+	padding: 20px;
+	top: 0;
+	width: 100%;
+	color: white;
+}
+
+.right {
+	float: right;
+}
+
 
 .ship {
 /*	transition: rotate .5s;

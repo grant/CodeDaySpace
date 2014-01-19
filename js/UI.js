@@ -1,6 +1,7 @@
 function UI(world) {
     var self = this;
     var $spaceArea = $('.spaceArea');
+    var $viewFrame = $('.viewFrame');
     this.selected = [];
 
     document.oncontextmenu = function () { return false; };
@@ -16,7 +17,7 @@ function UI(world) {
         world.spawnShip();
     });
 
-    $spaceArea.click(function (event) {
+    $viewFrame.click(function (event) {
         if (event.which === 3) { //right click
             rightClick(event);
         }
@@ -65,30 +66,43 @@ function UI(world) {
         });
     }
 
+    this.updateResourceUI = function (data) {
+        $('.minerals').html(data.minerals);
+        $('.gas').html(data.gas);
+    };
+
+    this.updateMinimap = function (actors) {
+    	var others = actors.others;
+    	var yours = actors.yours;
+    };
+
     // Scroll the world
+    var scrollEnabled = false;
     var mouseX = $(window).width()/2;
     var mouseY = $(window).height()/2;
 	window.setInterval(function () {
-		var percentX = mouseX/$(window).width();
-    	var percentY = mouseY/$(window).height();
-    	var currMapX = parseInt($('.spaceArea').css('left'));
-    	var currMapY = parseInt($('.spaceArea').css('top'));
-    	var edgeDetection = 0.2;
-    	var scrollSpeed = 30;
-    	if (percentX < edgeDetection) {
-    		var scale = 1 - (percentX/edgeDetection);
-    		$('.spaceArea').css('left', currMapX + scale*scrollSpeed);
-    	} else if (percentX > 1 - edgeDetection) {
-    		var scale = (percentX - (1 - edgeDetection))/edgeDetection;
-    		$('.spaceArea').css('left', currMapX - scale*scrollSpeed);
-    	}
-    	if (percentY < edgeDetection) {
-    		var scale = 1 - (percentY/edgeDetection);
-    		$('.spaceArea').css('top', currMapY + scale*scrollSpeed);
-    	} else if (percentY > 1 - edgeDetection) {
-    		var scale = (percentY - (1 - edgeDetection))/edgeDetection;
-    		$('.spaceArea').css('top', currMapY - scale*scrollSpeed);
-    	}
+		if (scrollEnabled) {
+			var percentX = mouseX/$(window).width();
+	    	var percentY = mouseY/$(window).height();
+	    	var currMapX = parseInt($('.spaceArea').css('left'));
+	    	var currMapY = parseInt($('.spaceArea').css('top'));
+	    	var edgeDetection = 0.2;
+	    	var scrollSpeed = 20;
+	    	if (percentX < edgeDetection) {
+	    		var scale = 1 - (percentX/edgeDetection);
+	    		$('.spaceArea').css('left', currMapX + (Math.pow(1+scale,2)-1)*scrollSpeed);
+	    	} else if (percentX > 1 - edgeDetection) {
+	    		var scale = (percentX - (1 - edgeDetection))/edgeDetection;
+	    		$('.spaceArea').css('left', currMapX - (Math.pow(1+scale,2)-1)*scrollSpeed);
+	    	}
+	    	if (percentY < edgeDetection) {
+	    		var scale = 1 - (percentY/edgeDetection);
+	    		$('.spaceArea').css('top', currMapY + (Math.pow(1+scale,2)-1)*scrollSpeed);
+	    	} else if (percentY > 1 - edgeDetection) {
+	    		var scale = (percentY - (1 - edgeDetection))/edgeDetection;
+	    		$('.spaceArea').css('top', currMapY - (Math.pow(1+scale,2)-1)*scrollSpeed);
+	    	}
+		}
 	}, 50);
 
     $('.viewFrame').mousemove(function (event) {
