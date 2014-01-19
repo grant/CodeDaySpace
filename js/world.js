@@ -73,10 +73,9 @@ function World() {
 	};
 
 	var serialize = function () {
-	    var ret = actors.reduce(function (cur, act) {
-	        return cur + String.fromCharCode(playerId, act.type) + act.serialize();
-	    }, "");
-	    return ret;
+	    return actors.reduce(function (cur, act) {
+	            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
+	        }, "");;
 	};
 
 	var deserialize = function (data) {
