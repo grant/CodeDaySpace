@@ -206,7 +206,7 @@ function World() {
                             };
 
                             var genLoc = function (acts) {
-                                var rad = Math.random() * 1000 + 2000;
+                                var rad = Math.random() * 1000 + 5000;
                                 var theta = Math.random() * Math.PI * 2;
                                 var ind = Math.floor(Math.random() * acts.length);
                                 return {
@@ -218,7 +218,7 @@ function World() {
                             var enActs = acts.filter(function (act) { return (act.type == Actor.SPACESHIP) || (act.type == Actor.BASE); });
                             if (enActs.length > 0) {
                                 baseLoc = genLoc(enActs);
-                                while (!checkLoc(loc)) {
+                                while (!checkLoc(baseLoc)) {
                                     baseLoc = genLoc(enActs);
                                 }
                             }
