@@ -1,4 +1,9 @@
+/// <reference path="helpers.js" />
+
 var $spaceArea = $('.spaceArea');
+
+//actor types:
+//0 - spaceships
 
 function Actor (params) {
     var self = this;
@@ -13,20 +18,6 @@ function Actor (params) {
     this.rot = 0; // rotation in degrees
     this.rotOffset = 90;
 
-    this.serialize = function () {
-        return {
-            width: this.width,
-            height: this.height,
-            userId: this.userId,
-            actorId: this.actorId,
-            type: this.type,
-            x: this.x,
-            y: this.y,
-            img: this.img,
-            rot: this.rot,
-            rotOffset: this.rotOffset
-        };
-    };
 
     var createActor = function () {
         var $ship = $('<img/>');
@@ -47,4 +38,28 @@ function Actor (params) {
     };
 
     this.dom = createActor();
+
+    this.serialize = function () {
+        return Helpers.packFloat(this.x) +
+            Helpers.packFloat(this.y) +
+            Helpers.packFloat(this.width) +
+            Helpers.packFloat(this.height) +
+            Helpers.packFloat(this.rot + this.rotOffset) +
+            Helpers.packInt(this.img.length) +
+            this.img;
+    };
 }
+
+Actor.deserialize = function (data, ind) {
+    var params = {
+        x: Helpers.parseFloat(data, ind),
+        y: Helpers.parseFloat(data, ind),
+        width: Helpers.parseFloat(data, ind),
+        height: Helpers.parseFloat(data, ind),
+        rot: Helpers.parseFloat(data, ind)
+    };
+    imgLen = Helpers.parseInt(data, ind);
+    params.img = data.substring(ind.ind, imgLen);
+    ind += imgLen;
+    return new Actor(param);
+};
