@@ -34,7 +34,7 @@ function World() {
 	};
 
 	// KEEP AT END
-	var ms = 100;
+	var ms = 50;
 	window.setInterval(function(){
 		self.updateActors(ms);
 	}, ms);
