@@ -69,7 +69,7 @@ function World() {
     }
 
     var serialize = function () {
-        return actors.reduce(function (cur, act) {            
+        return actors.reduce(function (cur, act) {
             return cur + String.fromCharCode(playerId, act.type) + act.serialize();
         }, "");
     };
@@ -199,6 +199,24 @@ function World() {
             });
         });
     };
+
+    // Used for minimap
+    function getActors() {
+        return {
+            other: otherActors,
+            yours: actors
+        };
+    };
+    function updateMinimap () {
+        var actors = getActors();
+        if (ui) {
+            ui.updateMinimap(actors);
+        }
+    }
+    window.setInterval(function () {
+        updateMinimap();
+    }, 50);
+
 
     this.offline = function () {
         playerId = 0;

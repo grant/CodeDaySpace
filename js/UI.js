@@ -71,6 +71,10 @@ function UI(world) {
     	$('.gas').html(data.gas);
     }
 
+    this.updateMinimap = function (actors) {
+    	// console.log(actors);
+    };
+
     // Scroll the world
     var scrollEnabled = false;
     var mouseX = $(window).width()/2;
