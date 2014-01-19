@@ -88,7 +88,9 @@ function UI(world) {
 		if (yours) {
 			yours.forEach(function(actor) {
 				if (actor.type === Actor.SPACESHIP) {
-					addShipToMinimap(actor, true);
+					addActorToMinimap(actor, ['ally', 'ship']);
+				} else if (actor.type === Actor.BASE) {
+					addActorToMinimap(actor, ['ally', 'base']);
 				}
 			});
 		}
@@ -96,23 +98,23 @@ function UI(world) {
 		if (others) {
 			others.forEach(function(actor) {
 				if (actor.type === Actor.SPACESHIP) {
-					addShipToMinimap(actor, false);
+					addActorToMinimap(actor, ['enemy', 'ship']);
+				} else if (actor.type === Actor.BASE) {
+					addActorToMinimap(actor, ['enemy', 'base']);
 				}
 			});
 		}
 
-		function addShipToMinimap(actor, ally) {
+		function addActorToMinimap(actor, classes) {
 			var x = actor.x;
 			var y = actor.y;
 			var percentX = (x - minX)/mapWidth;
 			var percentY = (y - minY)/mapWidth;
 			var $rect = $('<div/>');
 			$rect.addClass('mapElement');
-			if (ally) {
-				$rect.addClass('ally');
-			} else {
-				$rect.addClass('enemy');
-			}
+			classes.forEach(function(name) {
+				$rect.addClass(name);
+			});
 			$rect.css('left', percentX*100 + '%');
 			$rect.css('top', percentY*100 + '%');
 			$('.minimap').append($rect);

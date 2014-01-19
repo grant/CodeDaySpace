@@ -74,8 +74,14 @@ body > div {
 .mapElement.ally {
 	background-color: green;
 }
+.mapElement.ally.base {
+	background-color: white;
+}
 .mapElement.enemy {
 	background-color: red;
+}
+.mapElement.enemy.base {
+	background-color: black;
 }
 
 .ship {

@@ -139,7 +139,9 @@ function World() {
                 act.laserFired = true;
                 spawnLaser(act, [click.x, click.y]);
             } else {
-                act.goto(click);
+                if (act.goto) {
+                    act.goto(click);
+                }
             }
         });
     };
@@ -155,7 +157,9 @@ function World() {
 
         actors.forEach(function (act) {
             if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER) || (act.type == Actor.BASE)) {
-                act.update(ms, actors);
+                if (act.update) {
+                    act.update(ms, actors);
+                }
                 act.repaint();
             }
         });
@@ -222,7 +226,7 @@ function World() {
                             base = new Base({
                                 userId: playerId,
                                 actorId: 0,
-                                type: Actor.RESOURCES,
+                                type: Actor.BASE,
                                 img: "img/base.jpg",
                                 width: 200,
                                 height: 200,
@@ -287,7 +291,7 @@ function World() {
         base = new Base({
             userId: playerId,
             actorId: 0,
-            type: Actor.RESOURCES,
+            type: Actor.BASE,
             img: "img/base.jpg",
             width: 200,
             height: 200,
