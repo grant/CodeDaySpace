@@ -14,7 +14,7 @@ function Spaceship(params) {
     this.health = params.health || 100;
     this.laserFired = false;
 
-    var cooldown= 25;
+    var cooldown= 15;
     var timeSinceLaser = cooldown;
 
     this.update = function (deltaT, actors) {

@@ -138,7 +138,7 @@ function World() {
             if (click.ctrl && !act.laserFired) {
                 act.laserFired = true;
                 spawnLaser(act, [click.x, click.y]);
-            } else {
+            } else if (!click.ctrl) {
                 if (act.goto) {
                     act.goto(click);
                 }
@@ -158,9 +158,11 @@ function World() {
         actors.forEach(function (act) {
             if (act.type == Actor.SPACESHIP) {
                 baddiePos = act.closestBaddie(otherActors); //returns the closest bad guy
-                if (!act.laserFired) {
-                    act.laserFired = true;
-                    spawnLaser(act, [baddiePos[0], baddiePos[1]]);
+                if (typeof (baddiePos) != "undefined") {
+                    if (!act.laserFired) {
+                        act.laserFired = true;
+                        spawnLaser(act, [baddiePos[0], baddiePos[1]]);
+                    }
                 }
             }
 
