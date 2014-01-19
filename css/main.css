@@ -16,15 +16,24 @@ body > div {
 	top: 0;
 	left: 0;
 
+	background-image: url('../img/stars.gif');
+	background-repeat: repeat;
+
 	width: 100%;
 	height: 100%;
+	margin-left: -500000px;
+	margin-top: -500000px;
+	width: 1000000px;
+	height: 1000000px;
+}
+.spaceArea * {
+	margin-left: 500000px;
+	margin-top: 500000px;
 }
 
 .viewFrame {
 	width: 100%;
 	height: 100%;
-	background-image: url('../img/background.png');
-	background-repeat: repeat;
 	overflow: hidden;
 }
 
