@@ -13,8 +13,8 @@ function World() {
 		vy: 0,
 		maxV: 100,
 		maxA: 10,
-		size: 1,
-		img: '/img/spaceship.png'
+		scale: 1,
+		img: 'img/spaceship.png'
     }));
     // actors.push(new Actor({
     //     userId: 'alex',

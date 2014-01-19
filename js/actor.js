@@ -14,7 +14,7 @@ function Actor (params) {
     this.maxV = params.maxV;
     this.maxA = params.maxA || 1;
     this.img = params.img;
-    this.size = params.size;
+    this.scale = params.scale;
     this.angle = 0;
     this.rot = 0; // rotation in degrees
     this.rotOffset = 90;
@@ -50,9 +50,17 @@ function Actor (params) {
         // if close
         console.log(xdiff);
         if (Math.sqrt(xdiff*xdiff + ydiff*ydiff) < 100) {
-            // self.vx *= .9;
-            // self.vy *= .9;
+            self.vx *= .9;
+            self.vy *= .9;
+
+            if (self.vx < 3) {
+                self.vx = 0;
+            }
+            if (self.vy < 3) {
+                self.vy = 0;
+            }
         }
+
     };
 
     this.repaint = function () {
