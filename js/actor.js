@@ -2,8 +2,6 @@
 
 var $spaceArea = $('.spaceArea');
 
-//actor types:
-//0 - spaceships
 
 function Actor (params) {
     var self = this;
@@ -66,3 +64,6 @@ Actor.deserialize = function (data, ind) {
     ind.ind += imgLen;
     return params;
 };
+
+Actor.SPACESHIP = 0;
+Actor.LASER = 1;

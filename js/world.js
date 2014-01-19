@@ -72,6 +72,15 @@ function World() {
         }));
     };
 
+    var spawnLaser = function (p) {
+        actors.push(new Laser({
+            v: 100000,
+            xdes: p[0],
+            ydes: p[1],
+            frameLife: 5
+        }));
+    }
+
     var serialize = function () {
         return actors.reduce(function (cur, act) {
             return cur + String.fromCharCode(playerId, act.type) + act.serialize();
@@ -107,16 +116,21 @@ function World() {
         var click = uiEvent.click;
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
-        }, []).forEach(function (act) { act.goto(click); });
+        }, []).forEach(function (act) {
+            if (click.ctrl) 
+                spawnLaser([act.xdes, act.ydes]);
+            else
+                act.goto(click);
+        });
     };
 
     this.updateActors = function (ms) {
-        actors.forEach(function (act) { 
+        actors = actors.filter(function (act) {
+            return (act.type == Actor.LASER) && (act.frameLife < 0);
+        });
+        actors.forEach(function (act) {
             act.update(ms, actors); 
             act.repaint(); 
-            if (act.type == "laser" && act.frameLife < 0) {
-                //delete the laser
-            }
         });
         var dta = serialize();
         net.pushPull(dta, function (data) {

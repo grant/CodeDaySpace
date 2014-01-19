@@ -6,8 +6,8 @@ function Spaceship(params) {
     var self = this;
     this.xdes = params.xdes || params.x + params.width * 0.5 || 0;
     this.ydes = params.ydes || params.y + params.height * 0.5 || 0;
-    this.vx = params.vx || 0;// x velocity
-    this.vy = params.vy || 0;// y velocity
+    this.vx = params.vx || 0; // x velocity
+    this.vy = params.vy || 0; // y velocity
     this.maxV = params.maxV;
     this.maxA = params.maxA || 1;
     this.still = 0;
@@ -15,6 +15,9 @@ function Spaceship(params) {
     this.update = function (deltaT, actors) {
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
         var xdiff = self.xdes - (self.x + 0.5 * self.width);
+        if (xdiff * xdiff + ydiff * ydiff < 50)
+            return
+
         var angle = Math.atan2(xdiff, ydiff);
 
         forces = this.force(actors);
@@ -53,7 +56,6 @@ function Spaceship(params) {
         if (self.still > 2) {
             self.vx = 0;
             self.vy = 0;
-
         }
     };
 

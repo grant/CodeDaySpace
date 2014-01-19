@@ -56,7 +56,8 @@ function UI(world) {
 	        "click": {
 	            x: x,
 	            y: y,
-	            selected: self.selected
+	            selected: self.selected,
+	            ctrl: event.ctrlKey
 	        }
 	    });
     }
