@@ -3,6 +3,7 @@
 var $spaceArea = $('.spaceArea');
 
 
+
 function Actor (params) {
     var self = this;
     this.width = params.width;
@@ -76,3 +77,10 @@ Actor.deserialize = function (data, ind) {
 Actor.SPACESHIP = 0;
 Actor.LASER = 1;
 Actor.RESOURCES = 2;
+
+var COSTS = {};
+COSTS[Actor.SPACESHIP] =
+    {
+        minerals: 200,
+        gas: 10
+    };
