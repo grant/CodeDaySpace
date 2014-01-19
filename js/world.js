@@ -3,7 +3,7 @@ function World() {
 	var self = this;
     //initialization: initalize networking class
 	var actors = {};
-	var id1 = 0;
+	var id1 = 111;
     actors[id1]=(new Actor({
 		userId: 'grant',
 		actorId: id1,
@@ -17,7 +17,7 @@ function World() {
 		scale: 1,
 		img: 'img/spaceship.png'
     }));
-    var id2 = 1;
+    var id2 = 222;
     actors[id2]=(new Actor({
 		userId: 'alex',
 		actorId: id2,
@@ -37,7 +37,8 @@ function World() {
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
         for (var i in uiEvent.click.selected) {
-            var actor = actors[i];
+        	var index = uiEvent.click.selected[i];
+            var actor = actors[index];
             actor.goto(click);
 		}
 	};
