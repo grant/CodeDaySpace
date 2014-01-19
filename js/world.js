@@ -34,10 +34,22 @@ function World() {
 		img: 'img/spaceship.png'
 	}));
 
+	this.serialize = function () {
+		var world = {
+			actors: {};
+		};
+		for (var i in actors) {
+			var notUsers = true;
+			if (notUsers) {
+				console.log('hi');
+			}
+		}
+	};
+
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
         for (var i in uiEvent.click.selected) {
-        	var index = uiEvent.click.selected[i];
+			var index = uiEvent.click.selected[i];
             var actor = actors[index];
             actor.goto(click);
 		}

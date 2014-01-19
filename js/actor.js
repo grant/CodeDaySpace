@@ -21,6 +21,29 @@ function Actor (params) {
     this.rot = 0; // rotation in degrees
     this.rotOffset = 90;
 
+    this.serialize = function () {
+        return {
+            width: this.width,
+            height: this.height,
+            xdes: this.xdes,
+            ydes: this.ydes,
+            userId: this.userId,
+            actorId: this.actorId,
+            type: this.type,
+            x: this.x,
+            y: this.y,
+            vx: this.vx,
+            vy: this.vy,
+            maxV: this.maxV,
+            maxA: this.maxA,
+            img: this.img,
+            scale: this.scale,
+            angle: this.angle,
+            rot: this.rot,
+            rotOffset: this.rotOffset
+        };
+    };
+
     var createShip = function () {
         var $ship = $('<img/>');
         $ship.addClass(self.type);
@@ -51,18 +74,15 @@ function Actor (params) {
         self.rot = -(180/Math.PI) * angle + self.rotOffset;
 
         // if close
-        if (Math.sqrt(xdiff*xdiff + ydiff*ydiff) < 100) {
-            self.vx *= .9;
-            self.vy *= .9;
-
-            if (self.vx < 3) {
+        if (Math.sqrt(xdiff*xdiff + ydiff*ydiff) < 50) {
+            var minV = 1;
+            if (self.vx < minV) {
                 self.vx = 0;
             }
-            if (self.vy < 3) {
+            if (self.vy < minV) {
                 self.vy = 0;
             }
         }
-
     };
 
     this.repaint = function () {
