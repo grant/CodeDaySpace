@@ -48,8 +48,10 @@ function Actor (params) {
         self.rot = -(180/Math.PI) * angle + self.rotOffset;
 
         // if close
+        console.log(xdiff);
         if (Math.sqrt(xdiff*xdiff + ydiff*ydiff) < 100) {
-            // self
+            // self.vx *= .9;
+            // self.vy *= .9;
         }
     };
 
