@@ -214,7 +214,7 @@ function World() {
                             var enActs = acts.filter(function (act) { return (act.type == Actor.SPACESHIP) || (act.type == Actor.BASE); });
                             if (enActs.length > 0) {
                                 baseLoc = genLoc(enActs);
-                                while (!checkLoc(loc)) {
+                                while (!checkLoc(baseLoc)) {
                                     baseLoc = genLoc(enActs);
                                 }
                             }
