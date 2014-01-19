@@ -71,12 +71,52 @@ function UI(world) {
         $('.gas .data').html(data.gas);
     };
 
+    var mapWidth = 10000;
+    var mapHeight = 10000;
     this.updateMinimap = function (actors) {
-    	var others = actors.others;
-    	var yours = actors.yours;
+		var others = actors.others;
+		var yours = actors.yours;
 
-		var currMapX = parseInt($('.spaceArea').css('left'));
-		var currMapY = parseInt($('.spaceArea').css('top'));
+		var currMapX = -parseInt($('.spaceArea').css('left'), 10);
+		var currMapY = -parseInt($('.spaceArea').css('top'), 10);
+		var minX = currMapX - (mapWidth/2);
+		var maxX = currMapX + (mapWidth/2);
+		var minY = currMapY - (mapWidth/2);
+		var maxY = currMapY + (mapWidth/2);
+
+		$('.minimap').empty();
+		if (yours) {
+			yours.forEach(function(actor) {
+				if (actor.type === Actor.SPACESHIP) {
+					addShipToMinimap(actor, true);
+				}
+			});
+		}
+
+		if (others) {
+			others.forEach(function(actor) {
+				if (actor.type === Actor.SPACESHIP) {
+					addShipToMinimap(actor, false);
+				}
+			});
+		}
+
+		function addShipToMinimap(actor, ally) {
+			var x = actor.x;
+			var y = actor.y;
+			var percentX = (x - minX)/mapWidth;
+			var percentY = (y - minY)/mapWidth;
+			var $rect = $('<div/>');
+			$rect.addClass('mapElement');
+			if (ally) {
+				$rect.addClass('ally');
+			} else {
+				$rect.addClass('enemy');
+			}
+			$rect.css('left', percentX*100 + '%');
+			$rect.css('top', percentY*100 + '%');
+			$('.minimap').append($rect);
+		}
     };
 
     // Scroll the world

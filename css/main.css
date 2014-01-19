@@ -2,6 +2,10 @@
 	box-sizing: border-box;
 }
 
+html, body {
+	overflow: hidden;
+}
+
 body > div {
     width: 100%;
     height: 100%;
@@ -19,7 +23,8 @@ body > div {
 .viewFrame {
 	width: 100%;
 	height: 100%;
-	background-color: black;
+	background-image: url('../img/background.png');
+	background-repeat: repeat;
 	overflow: hidden;
 }
 
@@ -47,6 +52,22 @@ body > div {
 	opacity: .5;
 }
 
+.mapElement {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	margin-top: -5px;
+	margin-left: -5px;
+	opacity: .5;
+	border: 1px solid rgba(255, 255, 255, .8);
+}
+
+.mapElement.ally {
+	background-color: green;
+}
+.mapElement.enemy {
+	background-color: red;
+}
 
 .ship {
 /*	transition: rotate .5s;
