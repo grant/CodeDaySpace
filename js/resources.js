@@ -8,7 +8,7 @@ var Resources = function (params) {
     var parentSer = this.serialize;
     this.serialize = function () {
         return parentSer() +
-            Helpers.packFloat(this.minerals) + 
+            Helpers.packFloat(this.minerals) +
             Helpers.packFloat(this.gas);
     };
 };
