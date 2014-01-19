@@ -2,11 +2,6 @@
 
 var $spaceArea = $('.spaceArea');
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9109e8133692386328f0283b61855984eec4e3c6
 function Actor (params) {
     var self = this;
     this.width = params.width;
