@@ -12,10 +12,6 @@ function UI(world) {
 		return true;
 	});
 
-	$(document).keypress(function (event) {
-	    world.spawnShip();
-	});
-
 	$spaceArea.click(function(event) {
 	    if (event.which === 3) { //right click
 			rightClick(event);

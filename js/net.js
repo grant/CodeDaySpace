@@ -72,11 +72,6 @@ var Network = function (cBack) {
         });
     };
 
-
-    var packShort = function (num) {
-        return String.fromCharCode(Math.floor(num / 256), num % 256);
-    };
-
     this.pushPull = function (data, cBack) {
         WSPromise(ws, String.fromCharCode(4) + packShort(userId) + data, function (dt) {
             if (cBack)
