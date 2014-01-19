@@ -15,7 +15,7 @@ function World() {
 
     this.addActor = function (actor) {
         var id = 0;
-        while (actors.filter(function (act) { return act.actorId == id; }).length > 0) 
+        while (actors.filter(function (act) { return act.actorId == id; }).length > 0)
             id++;
         actor.setId(id);
         actors.push(actor);
@@ -59,9 +59,8 @@ function World() {
     }
 
     var serialize = function () {
-        return actors.reduce(function (cur, act) {
-            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
-        }, "");;
+        return actors.reduce(function (cur, act) {            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
+        }, "");
     };
 
     var unpackActors = function (data) {
@@ -116,7 +115,7 @@ function World() {
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
         }, []).forEach(function (act) {
-            if (click.ctrl) 
+            if (click.ctrl)
                 spawnLaser(act,[click.x,click.y]);
             else
                 act.goto(click);
