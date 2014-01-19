@@ -2,8 +2,6 @@
 
 var $spaceArea = $('.spaceArea');
 
-//actor types:
-//0 - spaceships
 
 function Actor (params) {
     var self = this;
@@ -31,6 +29,11 @@ function Actor (params) {
         return $ship;
     };
 
+
+    this.setId = function (id) {
+        self.dom.data('id', this.actorId = id);
+    };
+
     this.repaint = function () {
         self.dom.css('left', self.x);
         self.dom.css('top', self.y);
@@ -47,6 +50,7 @@ function Actor (params) {
             Helpers.packFloat(self.height) +
             Helpers.packFloat(self.rot) +
             Helpers.packFloat(self.rotOffset) +
+            Helpers.packInt(self.actorId) +
             Helpers.packInt(self.img.length) +
             self.img);
     };
@@ -59,10 +63,14 @@ Actor.deserialize = function (data, ind) {
         width: Helpers.parseFloat(data, ind),
         height: Helpers.parseFloat(data, ind),
         rot: Helpers.parseFloat(data, ind),
-        rotOffset: Helpers.parseFloat(data, ind)
+        rotOffset: Helpers.parseFloat(data, ind),
+        actorId : Helpers.parseInt(data, ind)
     };
     imgLen = Helpers.parseInt(data, ind);
     params.img = data.substr(ind.ind, imgLen);
     ind.ind += imgLen;
     return params;
 };
+
+Actor.SPACESHIP = 0;
+Actor.LASER = 1;

@@ -6,9 +6,10 @@ function Laser(params) {
     this.xdes = params.xdes || 0;
     this.ydes = params.ydes || 0;
     this.frameLife = params.frameLife;
-    var ydiff = self.ydes - (self.y+0.5*self.height);
+    var ydiff = self.ydes - (self.y + 0.5 * self.height);
     var xdiff = self.xdes - (self.x+0.5*self.width);
-    var angle = Math.atan2(xdiff, ydiff);
+    var angle = Math.atan2(ydiff, xdiff);
+    this.rot = 90+angle * (180 / Math.PI);
 
     this.vx = this.v * Math.cos(angle);
     this.vy = this.v * Math.sin(angle);

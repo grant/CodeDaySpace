@@ -8,56 +8,22 @@ function World() {
     var ui;
     var playerId;
     var players;
-    var hasConnected = false;
-    var conCback;
-    this.onconnected = function (cBack) {
-        if (hasConnected)
-            cBack();
-        else
-            conCback = cBack;
-    };
-    var net = new Network(function () {
-        hasConnected = true;
-        if (conCback != null)
-            conCback();
-    });
+    var net;
 
     var otherActors = [];
     var actors = [];
-    //var actors = [new Spaceship({
-    //    userId: 'grant',
-    //    actorId: 1,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 50,
-    //    y: 50,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //}), new Spaceship({
-    //    userId: 'alex',
-    //    actorId: 2,
-    //    type: 0,
-    //    width: 100,
-    //    height: 100,
-    //    x: 550,
-    //    y: 350,
-    //    vx: 0,
-    //    vy: 0,
-    //    maxV: 100,
-    //    maxA: 2,
-    //    scale: 1,
-    //    img: 'img/spaceship.png'
-    //})];
+
+    this.addActor = function (actor) {
+        var id = 0;
+        while (actors.filter(function (act) { return act.actorId == id; }).length > 0)
+            id++;
+        actor.setId(id);
+        actors.push(actor);
+    };
 
     this.spawnShip = function () {
-        actors.push(new Spaceship({
+        var newShip = new Spaceship({
             userId: playerId,
-            actorId: actors.length,
             type: 0,
             width: 100,
             height: 100,
@@ -65,16 +31,35 @@ function World() {
             y: Math.random() * 500,
             vx: 0,
             vy: 0,
-            maxV: 100,
-            maxA: 2,
-            scale: 1,
+            maxV: 1500,
+            maxA: 1000,
             img: 'img/spaceship.png'
-        }));
+        });
+        self.addActor(newShip);
     };
+
+    var spawnLaser = function (actor,p) {
+        var newLaser = new Laser({
+            width: 5,
+            height: 50,
+            userId: actor.userId,
+            type: Actor.LASER,
+            x: actor.x+0.5*actor.width,
+            y: actor.y + 0.5 * actor.height,
+            img: 'img/laser.png',
+            rot: actor.rot,
+            rotOffset: 150,
+            v: 10000,
+            xdes: p[0],
+            ydes: p[1],
+            frameLife: 5
+        });
+        self.addActor(newLaser);
+    }
 
     var serialize = function () {
         return actors.reduce(function (cur, act) {            return cur + String.fromCharCode(playerId, act.type) + act.serialize();
-        }, "");;
+        }, "");
     };
 
     var unpackActors = function (data) {
@@ -106,16 +91,26 @@ function World() {
         var click = uiEvent.click;
         uiEvent.click.selected.reduce(function (cur, i) {
             return cur.concat(actors.filter(function (act) { return act.actorId == i; }));
-        }, []).forEach(function (act) { act.goto(click); });
+        }, []).forEach(function (act) {
+            if (click.ctrl)
+                spawnLaser(act,[click.x,click.y]);
+            else
+                act.goto(click);
+        });
     };
 
     this.updateActors = function (ms) {
+        actors.filter(function (act) {
+            return (act.type == Actor.LASER) && (act.frameLife <= 0);
+        }).forEach(function(act) { act.dom.remove(); });
+
+        actors = actors.filter(function (act) {
+            return (act.type != Actor.LASER) || (act.frameLife > 0);
+        });
+
         actors.forEach(function (act) {
             act.update(ms, actors);
             act.repaint();
-            if (act.type == "laser" && act.frameLife < 0) {
-                //delete the laser
-            }
         });
         var dta = serialize();
         net.pushPull(dta, function (data) {
@@ -124,31 +119,44 @@ function World() {
     };
 
     this.login = function (name, cBack) {
-        net.login(name, function (plId) {
-            playerId = plId;
-            net.getPlayers(function (pls) {
-                players = pls;
+        net = new Network(function () {
+            net.login(name, function (plId) {
+                playerId = plId;
+                net.getPlayers(function (pls) {
+                    players = pls;
 
-                net.getAllActors(function (allData) {
+                    net.getAllActors(function (allData) {
 
-                    var acts = unpackActors(allData);
+                        var acts = unpackActors(allData);
 
-                    actors = acts.filter(function (act) { return act.userId == playerId; });
+                        actors = acts.filter(function (act) { return act.userId == playerId; });
+                        otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
-                    ui = new UI(self);
+                        ui = new UI(self);
 
-                    // KEEP AT END
-                    var ms = 100;
-                    window.setInterval(function () {
-                        self.updateActors(ms);
-                    }, ms);
+                        // KEEP AT END
+                        var ms = 100;
+                        window.setInterval(function () {
+                            self.updateActors(ms);
+                        }, ms);
 
-                    cBack();
+                        cBack();
+                    });
                 });
-
-
-
             });
         });
     };
-}
+
+    this.offline = function () {
+        playerId = 0;
+        players = [{ name: "sda", id: 0 }];
+        ui = new UI(self);
+        var ms = 100;
+        window.setInterval(function () {
+            self.updateActors(ms);
+        }, ms);
+        net = {
+            pushPull: function (data, cBack) { cBack(""); }
+        };
+    };
+};
