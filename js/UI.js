@@ -165,6 +165,14 @@ function UI(world) {
     	mouseY = event.clientY;
     });
 
+    // Toggle scrolling
+    $(window).keypress(function(event) {
+		// if press space
+    	if (event.charCode === 32) {
+    		scrollEnabled = !scrollEnabled;
+    	}
+    });
+
     // Click on the minimap
     // var mouseDown = false;
     // $('.minimap').mousemove(function(event) {
