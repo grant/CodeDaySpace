@@ -79,8 +79,11 @@ var Network = function (cBack) {
     };
 
     this.pushPull = function (data, cBack) {
+        //console.log("sending " + data);
+        //console.log(", length: " + data.length);
         WSPromise(ws, String.fromCharCode(4) + packShort(userId) + data, function (dt) {
-            console.log("receiveing: " + dt);
+            //console.log("receiveing: " + dt);
+            //console.log(", length: " + dt.length);
             if (cBack)
                 cBack(dt);
         });

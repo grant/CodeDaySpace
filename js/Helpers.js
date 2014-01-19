@@ -11,4 +11,4 @@
     parseInt: function (e, t) {
         return (e.charCodeAt(t.ind++) << 24) + (e.charCodeAt(t.ind++) << 16) + (e.charCodeAt(t.ind++) << 8) + e.charCodeAt(t.ind++);
     }
-}
+};
