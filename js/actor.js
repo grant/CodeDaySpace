@@ -51,7 +51,7 @@ function Actor (params) {
             Helpers.packFloat(self.rot) +
             Helpers.packFloat(self.rotOffset) +
             Helpers.packInt(self.actorId) +
-//            Helpers.packInt(self.img.length) +
+            Helpers.packInt(self.img.length) +
             self.img);
     };
 }

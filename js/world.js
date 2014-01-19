@@ -2,6 +2,7 @@
 /// <reference path="actor.js" />
 /// <reference path="spaceship.js" />
 /// <reference path="resources.js" />
+/// <reference path="world.js" />
 // var actors = new
 function World() {
     var self = this;
@@ -156,7 +157,7 @@ function World() {
         });
 
         actors.forEach(function (act) {
-            if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER) || (act.type == Actor.BASE)) {
+            if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER)) {
                 if (act.update) {
                     act.update(ms, actors);
                 }
@@ -206,7 +207,7 @@ function World() {
                             };
 
                             var genLoc = function (acts) {
-                                var rad = Math.random() * 1000 + 5000;
+                                var rad = Math.random() * 1000 + 500;
                                 var theta = Math.random() * Math.PI * 2;
                                 var ind = Math.floor(Math.random() * acts.length);
                                 return {
@@ -237,6 +238,7 @@ function World() {
                             actors.push(base);
                         } else {
                             resources = res[0];
+                            base = actors.filter(function (act) { return act.type == Actor.BASE; })[0];
                         }
                         otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
