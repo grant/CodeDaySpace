@@ -11,6 +11,7 @@ function Spaceship(params) {
     this.maxV = params.maxV;
     this.maxA = params.maxA || 1;
     this.still = 0;
+    this.health = params.health || 100;
 
     this.update = function (deltaT, actors) {
         var ydiff = self.ydes - (self.y + 0.5 * self.height);
@@ -84,7 +85,8 @@ function Spaceship(params) {
     this.serialize = function () {
         return parentSer() +
             Helpers.packFloat(this.maxV) +
-            Helpers.packFloat(this.maxA);
+            Helpers.packFloat(this.maxA) + 
+            Helpers.packFloat(this.health);
     };
 
 
@@ -104,5 +106,6 @@ Spaceship.deserialize = function (data, ind) {
     var params = Actor.deserialize(data, ind);
     params.maxV = Helpers.parseFloat(data, ind);
     params.maxA = Helpers.parseFloat(data, ind);
+    param.health = Helpers.parseFloat(data, ind);
     return params;
 };
