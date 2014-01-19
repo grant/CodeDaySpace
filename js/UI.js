@@ -50,8 +50,11 @@ function UI(world) {
     }
 
     function rightClick(event) {
-        var x = event.clientX;
-        var y = event.clientY;
+    	var currMapX = parseInt($('.spaceArea').css('left'));
+    	var currMapY = parseInt($('.spaceArea').css('top'));
+
+        var x = event.clientX - currMapX;
+        var y = event.clientY - currMapY;
         world.UIEvent({
             "click": {
                 x: x,
@@ -61,4 +64,35 @@ function UI(world) {
             }
         });
     }
+
+    // Scroll the world
+    var mouseX = $(window).width()/2;
+    var mouseY = $(window).height()/2;
+	window.setInterval(function () {
+		var percentX = mouseX/$(window).width();
+    	var percentY = mouseY/$(window).height();
+    	var currMapX = parseInt($('.spaceArea').css('left'));
+    	var currMapY = parseInt($('.spaceArea').css('top'));
+    	var edgeDetection = 0.2;
+    	var scrollSpeed = 30;
+    	if (percentX < edgeDetection) {
+    		var scale = 1 - (percentX/edgeDetection);
+    		$('.spaceArea').css('left', currMapX + scale*scrollSpeed);
+    	} else if (percentX > 1 - edgeDetection) {
+    		var scale = (percentX - (1 - edgeDetection))/edgeDetection;
+    		$('.spaceArea').css('left', currMapX - scale*scrollSpeed);
+    	}
+    	if (percentY < edgeDetection) {
+    		var scale = 1 - (percentY/edgeDetection);
+    		$('.spaceArea').css('top', currMapY + scale*scrollSpeed);
+    	} else if (percentY > 1 - edgeDetection) {
+    		var scale = (percentY - (1 - edgeDetection))/edgeDetection;
+    		$('.spaceArea').css('top', currMapY - scale*scrollSpeed);
+    	}
+	}, 50);
+
+    $('.viewFrame').mousemove(function (event) {
+    	mouseX = event.clientX;
+    	mouseY = event.clientY;
+    });
 };
