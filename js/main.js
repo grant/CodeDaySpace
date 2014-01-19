@@ -5,9 +5,6 @@ $(function () {
     var $spaceArea = $('.spaceArea');
 
     var world = new World();
-    world.onconnected(function () {
-        $("#loginBut").prop("disabled", false);
-    });
 
     $("#loginBut").click(function () {
         world.login($("#loginName").val(), function () {

@@ -8,19 +8,7 @@ function World() {
     var ui;
     var playerId;
     var players;
-    var hasConnected = false;
-    var conCback;
-    this.onconnected = function (cBack) {
-        if (hasConnected)
-            cBack();
-        else
-            conCback = cBack;
-    };
-    var net = new Network(function () {
-        hasConnected = true;
-        if (conCback != null)
-            conCback();
-    });
+    var net;
 
     var otherActors = [];
     var actors = [];
@@ -127,27 +115,29 @@ function World() {
     };
 
     this.login = function (name, cBack) {
-        net.login(name, function (plId) {
-            playerId = plId;
-            net.getPlayers(function (pls) {
-                players = pls;
+        net = new Network(function () {
+            net.login(name, function (plId) {
+                playerId = plId;
+                net.getPlayers(function (pls) {
+                    players = pls;
 
-                net.getAllActors(function (allData) {
+                    net.getAllActors(function (allData) {
 
-                    var acts = unpackActors(allData);
+                        var acts = unpackActors(allData);
 
-                    actors = acts.filter(function (act) { return act.userId == playerId; });
-                    otherActors = acts.filter(function (act) { return act.userId != playerId; });
+                        actors = acts.filter(function (act) { return act.userId == playerId; });
+                        otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
-                    ui = new UI(self);
+                        ui = new UI(self);
 
-                    // KEEP AT END
-                    var ms = 100;
-                    window.setInterval(function () {
-                        self.updateActors(ms);
-                    }, ms);
+                        // KEEP AT END
+                        var ms = 100;
+                        window.setInterval(function () {
+                            self.updateActors(ms);
+                        }, ms);
 
-                    cBack();
+                        cBack();
+                    });
                 });
             });
         });
