@@ -2,13 +2,14 @@
 function World() {
 	var self = this;
     //initialization: initalize networking class
-    var actors = [];
-    actors.push(new Actor({
+	var actors = {};
+	var id1 = 0;
+    actors[id1]=(new Actor({
 		userId: 'grant',
-		actorId: 23,
+		actorId: id1,
 		type: 'ship',
-		x: 10,
-		y: 10,
+		x: 50,
+		y: 50,
 		vx: 0,
 		vy: 0,
 		maxV: 100,
@@ -16,23 +17,24 @@ function World() {
 		scale: 1,
 		img: 'img/spaceship.png'
     }));
-    actors.push(new Actor({
+    var id2 = 1;
+    actors[id2]=(new Actor({
          userId: 'alex',
-         actorId: 23,
+         actorId: id2,
          type: 'ship',
          width: 100,
          height: 1500,
-         x: 550,
-         y: 550,
-         vx: 10,
-         vy: 20,
+         x: 450,
+         y: 450,
+         vx: 0,
+         vy: 0,
          size: 1,
          img: '/img/spaceship.png'
      }));
 
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
-        for (var i in actors) {
+        for (var i in uiEvent.selected) {
             var actor = actors[i];
             actor.goto(click);
 		}

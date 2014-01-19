@@ -12,17 +12,27 @@ function UI(world) {
 	});
 
 	$spaceArea.click(function(event) {
-		if (event.which === 3) { //right click
+	    if (event.which === 3) { //right click
 			rightClick(event);
 		}
 		if (event.which === 1) { //left click
-			leftClick(event);
-		    //determine which actor was clicked on
-            //select this actor
+		    leftClick(event);
 		}
     });
 
     function leftClick (event) {
+        var clickedObj = $(event.target);
+        var actorId = clickedObj.data("id");
+        var index = selected.indexOf(actorId);
+        console.log(actorId);
+        if (index == -1) {
+            selected.push(actorId);
+            console.log("selected");
+        } else {
+            selected.splice(index, 1);
+            console.log("deselected");
+        }
+
     }
 
     function rightClick (event) {
@@ -31,7 +41,8 @@ function UI(world) {
 	    world.UIEvent({
 	        "click": {
 	            x: x,
-	            y: y
+	            y: y,
+	            selected: selected
 	        }
 	    });
     }
