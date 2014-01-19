@@ -155,6 +155,7 @@ function World() {
                 act.repaint();
             }
         });
+        ui.updateResourceUI(resources);
         var dta = serialize();
         net.pushPull(dta, function (data) {
             deserialize(data);
