@@ -20,16 +20,13 @@ function Spaceship(params) {
             return;
 
         var angle = Math.atan2(xdiff, ydiff);
-
-        forces = this.force(actors);
-        //console.log(forces);
+        //forces = this.force(actors);
 
         // v accelerates in direction towards destination
         var deltaLen = xdiff * xdiff + ydiff * ydiff;
         var acceleration = deltaLen * deltaT;
         if (acceleration > self.maxA)
             acceleration = self.maxA;
-        //console.log(acceleration);
 
         self.vx += xdiff * acceleration / deltaLen * deltaT;
         self.vy += ydiff * acceleration / deltaLen * deltaT;
@@ -64,6 +61,13 @@ function Spaceship(params) {
         var forcex = 0;
         var forcey = 0;
         //        var thisRadius = Math.sqrt(Math.pow(self.width * 0.5,2) + Math.pow(self.height*0.5,2));
+        actors.filter(function (act) {
+            return (act.type == Actor.LASER) && (act.frameLife <= 0);
+        }).forEach(function (act) {
+            
+        });
+
+
         for (var i in actors) {
             curActor = actors[i];
             if (curActor.userId != self.userId || curActor.actorId != self.actorId) {
