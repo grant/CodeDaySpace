@@ -57,7 +57,7 @@ function Spaceship(params) {
             self.y += self.vy * deltaT / 10000;
         }
 
-        if (Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 100 || xdiff * xdiff + ydiff * ydiff > 50) {
+        if ((Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 500) || (xdiff * xdiff + ydiff * ydiff > 50)) {
             self.still = 0;
         } else {
             self.still++;
