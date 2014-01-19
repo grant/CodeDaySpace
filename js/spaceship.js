@@ -4,8 +4,8 @@ function Spaceship(params) {
     Actor.call(this, params);
 
     var self = this;
-    this.xdes = params.xdes || params.x || 0;
-    this.ydes = params.ydes || params.y || 0;
+    this.xdes = params.xdes || params.x + params.width * 0.5 || 0;
+    this.ydes = params.ydes || params.y + params.height * 0.5 || 0;
     this.vx = params.vx || 0;// x velocity
     this.vy = params.vy || 0;// y velocity
     this.maxV = params.maxV;
