@@ -41,12 +41,12 @@ function Actor (params) {
     this.dom = createActor();
 
     this.serialize = function () {
-        console.log(self.rot);
         return (Helpers.packFloat(self.x) +
             Helpers.packFloat(self.y) +
             Helpers.packFloat(self.width) +
             Helpers.packFloat(self.height) +
             Helpers.packFloat(self.rot) +
+            Helpers.packFloat(self.rotOffset) +
             Helpers.packInt(self.img.length) +
             self.img);
     };
@@ -58,11 +58,11 @@ Actor.deserialize = function (data, ind) {
         y: Helpers.parseFloat(data, ind),
         width: Helpers.parseFloat(data, ind),
         height: Helpers.parseFloat(data, ind),
-        rot: Helpers.parseFloat(data, ind)
+        rot: Helpers.parseFloat(data, ind),
+        rotOffset: Helpers.parseFloat(data, ind)
     };
-    console.log(params.rot);
     imgLen = Helpers.parseInt(data, ind);
     params.img = data.substr(ind.ind, imgLen);
     ind.ind += imgLen;
-    return new Actor(params);
+    return params;
 };

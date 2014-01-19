@@ -78,20 +78,27 @@ function World() {
         }, "");;
     };
 
-    var deserialize = function (data) {
-        var ind = { ind : 0 };
+    var unpackActors = function (data) {
+        var ind = { ind: 0 };
         var acts = [];
         while (ind.ind < data.length) {
             var uId = data.charCodeAt(ind.ind++);
             var actType = data.charCodeAt(ind.ind++);
             switch (actType) {
                 case 0: //spaceship
-                    var newAct = Actor.deserialize(data, ind);
-                    acts.push(newAct);
-                    newAct.repaint();
+                    var act = new Spaceship(Spaceship.deserialize(data, ind));
+                    act.userId = uId;
+                    act.type = actType;
+                    acts.push(act);
                     break;
             }
         }
+        return acts;
+    };
+
+    var deserialize = function (data) {
+        var acts = unpackActors(data);
+        acts.forEach(function (act) { act.repaint(); })
         otherActors.forEach(function (act) { act.dom.remove(); });
         otherActors = acts;
     };
@@ -122,15 +129,26 @@ function World() {
             playerId = plId;
             net.getPlayers(function (pls) {
                 players = pls;
-                ui = new UI(self);
 
-                // KEEP AT END
-                var ms = 100;
-                window.setInterval(function () {
-                    self.updateActors(ms);
-                }, ms);
+                net.getAllActors(function (allData) {
 
-                cBack();
+                    var acts = unpackActors(allData);
+
+                    actors = acts.filter(function (act) { return act.userId == playerId; });
+
+                    ui = new UI(self);
+
+                    // KEEP AT END
+                    var ms = 100;
+                    window.setInterval(function () {
+                        self.updateActors(ms);
+                    }, ms);
+
+                    cBack();
+                });
+
+
+
             });
         });
     };

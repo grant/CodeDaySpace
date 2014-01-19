@@ -1,5 +1,7 @@
+/// <reference path="actor.js" />
+
 function Spaceship(params) {
-    Actor.call(this,params);
+    Actor.call(this, params);
 
     var self = this;
     this.xdes = params.xdes || params.x || 0;
@@ -11,8 +13,8 @@ function Spaceship(params) {
     this.still = 0;
 
     this.update = function (deltaT, actors) {
-        var ydiff = self.ydes - (self.y+0.5*self.height);
-        var xdiff = self.xdes - (self.x+0.5*self.width);
+        var ydiff = self.ydes - (self.y + 0.5 * self.height);
+        var xdiff = self.xdes - (self.x + 0.5 * self.width);
         var angle = Math.atan2(xdiff, ydiff);
 
         forces = this.force(actors);
@@ -29,7 +31,7 @@ function Spaceship(params) {
         self.vy += ydiff * acceleration / deltaLen * deltaT;
 
         var vlen = Math.sqrt(self.vx * self.vx + self.vy * self.vy);
-        if (vlen > self.maxV){
+        if (vlen > self.maxV) {
             self.vx = self.vx / vlen * self.maxV;
             self.vy = self.vy / vlen * self.maxV;
         }
@@ -42,8 +44,8 @@ function Spaceship(params) {
             self.y += self.vy * deltaT / 10000;
         }
 
-        if (Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 100 || xdiff*xdiff+ydiff*ydiff > 50 ){
-            self.still = 0 ;
+        if (Math.pow(self.x - prevPos[0], 2) + Math.pow(self.y - prevPos[1], 2) > 100 || xdiff * xdiff + ydiff * ydiff > 50) {
+            self.still = 0;
         } else {
             self.still++;
         }
@@ -74,7 +76,14 @@ function Spaceship(params) {
             }
         }
         return [forcex, forcey];
-    }
+    };
+
+    var parentSer = this.serialize;
+    this.serialize = function () {
+        return parentSer() +
+            Helpers.packFloat(this.maxV) +
+            Helpers.packFloat(this.maxA);
+    };
 
 
     this.getV = function () {
@@ -87,4 +96,11 @@ function Spaceship(params) {
         self.ydes = point.y;
     };
 
-}
+};
+
+Spaceship.deserialize = function (data, ind) {
+    var params = Actor.deserialize(data, ind);
+    params.maxV = Helpers.parseFloat(data, ind);
+    params.maxA = Helpers.parseFloat(data, ind);
+    return params;
+};
