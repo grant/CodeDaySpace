@@ -66,10 +66,10 @@ function UI(world) {
         });
     }
 
-    function updateResourceUI(data) {
-    	$('.minerals').html(data.minerals);
-    	$('.gas').html(data.gas);
-    }
+    this.updateResourceUI = function (data) {
+        $('.minerals').html(data.minerals);
+        $('.gas').html(data.gas);
+    };
 
     // Scroll the world
     var scrollEnabled = false;
