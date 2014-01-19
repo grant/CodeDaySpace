@@ -24,21 +24,29 @@ function World() {
     };
 
     this.spawnShip = function () {
-        var newShip = new Spaceship({
-            userId: playerId,
-            type: 0,
-            width: 100,
-            height: 100,
-            x: Math.random() * 500,
-            y: Math.random() * 500,
-            vx: 0,
-            vy: 0,
-            maxV: 1500,
-            maxA: 1000,
-            img: 'img/spaceship'+String(playerId%3)+'.png',
-            health: 200
-        });
-        self.addActor(newShip);
+        var type = Actor.SPACESHIP;
+        var cost = COSTS[type];
+
+        if ((resources.minerals > cost.minerals) &&
+            (resources.gas > cost.gas)) {
+            resources.minerals -= cost.minerals;
+            resources.gas -= cost.gas;
+            var newShip = new Spaceship({
+                userId: playerId,
+                type: type,
+                width: 100,
+                height: 100,
+                x: Math.random() * 500,
+                y: Math.random() * 500,
+                vx: 0,
+                vy: 0,
+                maxV: 1500,
+                maxA: 1000,
+                img: 'img/spaceship' + String(playerId % 3) + '.png',
+                health: 200
+            });
+            self.addActor(newShip);
+        }
     };
 
     var spawnLaser = function (actor,p) {
@@ -142,8 +150,10 @@ function World() {
         });
 
         actors.forEach(function (act) {
-            act.update(ms, actors);
-            act.repaint();
+            if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER)) {
+                act.update(ms, actors);
+                act.repaint();
+            }
         });
         var dta = serialize();
         net.pushPull(dta, function (data) {
