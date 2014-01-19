@@ -29,9 +29,9 @@ function World() {
          vx: 0,
          vy: 0,
          scale: 1,
-         img: '/img/spaceship.png'
+         img: 'img/spaceship.png'
      }));
-
+    s
     this.UIEvent = function (uiEvent) {
         var click = uiEvent.click;
         console.log(uiEvent.click.selected);
