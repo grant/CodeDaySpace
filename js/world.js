@@ -1,6 +1,7 @@
 /// <reference path="net.js" />
 /// <reference path="actor.js" />
 /// <reference path="spaceship.js" />
+/// <reference path="resources.js" />
 // var actors = new
 function World() {
     var self = this;
@@ -12,6 +13,7 @@ function World() {
 
     var otherActors = [];
     var actors = [];
+    var resources;
 
     this.addActor = function (actor) {
         var id = 0;
@@ -71,14 +73,20 @@ function World() {
             var uId = data.charCodeAt(ind.ind++);
             var actType = data.charCodeAt(ind.ind++);
             switch (actType) {
-                case 0: //spaceship
+                case Actor.SPACESHIP: //spaceship
                     var act = new Spaceship(Spaceship.deserialize(data, ind));
                     act.userId = uId;
                     act.type = actType;
                     acts.push(act);
                     break;
-                case 1:
+                case Actor.LASER:
                     var act = new Laser(Laser.deserialize(data, ind));
+                    act.userId = uId;
+                    act.type = actType;
+                    acts.push(act);
+                    break;
+                case Actor.RESOURCES:
+                    var act = new Resources(Resources.deserialize(data, ind));
                     act.userId = uId;
                     act.type = actType;
                     acts.push(act);
@@ -91,7 +99,9 @@ function World() {
     var deserialize = function (data) {
         var acts = unpackActors(data);
         acts.forEach(function (act) {
-            act.repaint();
+            if ((act.type == Actor.LASER) || (act.type == Actor.SPACESHIP)) {
+                act.repaint();
+            }
             if (act.type == Actor.LASER) {
                 for (var i = actors.length - 1; i >= 0; i--)
                     var cact = actors[i];
@@ -153,6 +163,16 @@ function World() {
                         var acts = unpackActors(allData);
 
                         actors = acts.filter(function (act) { return act.userId == playerId; });
+                        var res = actors.filter(function (act) { return act.type == Actor.RESOURCES; });
+                        if (res.length == 0) {
+                            resources = new Resources({
+                                minerals: 1000,
+                                gas: 100
+                            });
+                            actors.push(resources);
+                        } else {
+                            resources = res[0];
+                        }
                         otherActors = acts.filter(function (act) { return act.userId != playerId; });
 
                         ui = new UI(self);
@@ -175,6 +195,11 @@ function World() {
         players = [{ name: "sda", id: 0 }];
         ui = new UI(self);
         var ms = 100;
+        resources = new Resources({
+            minerals: 1000,
+            gas: 100
+        });
+        actors = [resources];
         window.setInterval(function () {
             self.updateActors(ms);
         }, ms);
