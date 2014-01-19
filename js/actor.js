@@ -74,3 +74,4 @@ Actor.deserialize = function (data, ind) {
 
 Actor.SPACESHIP = 0;
 Actor.LASER = 1;
+Actor.RESOURCES = 2;
