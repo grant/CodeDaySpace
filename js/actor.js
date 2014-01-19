@@ -11,7 +11,7 @@ function Actor (params) {
     this.type = params.type;
     this.x = params.x || 0;
     this.y = params.y || 0;
-    this.img = params.img;
+    this.img = params.img || "";
     this.rot = params.rot || 0; // rotation in degrees
     this.rotOffset = params.rotOffset || 0;
 
