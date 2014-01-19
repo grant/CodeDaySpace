@@ -75,6 +75,7 @@ Actor.deserialize = function (data, ind) {
 Actor.SPACESHIP = 0;
 Actor.LASER = 1;
 Actor.RESOURCES = 2;
+Actor.BASE = 3;
 
 var COSTS = {};
 COSTS[Actor.SPACESHIP] =

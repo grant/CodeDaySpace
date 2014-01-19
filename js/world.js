@@ -14,6 +14,7 @@ function World() {
     var otherActors = [];
     var actors = [];
     var resources;
+    var base;
 
     this.addActor = function (actor) {
         var id = 0;
@@ -27,8 +28,8 @@ function World() {
         var type = Actor.SPACESHIP;
         var cost = COSTS[type];
 
-        if ((resources.minerals > cost.minerals) &&
-            (resources.gas > cost.gas)) {
+        if ((resources.minerals >= cost.minerals) &&
+            (resources.gas >= cost.gas)) {
             resources.minerals -= cost.minerals;
             resources.gas -= cost.gas;
             var newShip = new Spaceship({
@@ -37,8 +38,8 @@ function World() {
                 width: 100,
                 height: 100,
                 laserFired: false,
-                x: Math.random() * 500,
-                y: Math.random() * 500,
+                x: Math.random() * 500 - 250 + base.x,
+                y: Math.random() * 500 - 250 + base.y,
                 vx: 0,
                 vy: 0,
                 maxV: 1500,
@@ -82,26 +83,24 @@ function World() {
         while (ind.ind < data.length) {
             var uId = data.charCodeAt(ind.ind++);
             var actType = data.charCodeAt(ind.ind++);
+            var act;
             switch (actType) {
                 case Actor.SPACESHIP: //spaceship
-                    var act = new Spaceship(Spaceship.deserialize(data, ind));
-                    act.userId = uId;
-                    act.type = actType;
-                    acts.push(act);
+                    act = new Spaceship(Spaceship.deserialize(data, ind));
                     break;
                 case Actor.LASER:
                     var act = new Laser(Laser.deserialize(data, ind));
-                    act.userId = uId;
-                    act.type = actType;
-                    acts.push(act);
                     break;
                 case Actor.RESOURCES:
                     var act = new Resources(Resources.deserialize(data, ind));
-                    act.userId = uId;
-                    act.type = actType;
-                    acts.push(act);
+                    break;
+                case Actor.BASE:
+                    var act = new Base(Base.deserialize(data, ind));
                     break;
             }
+            act.userId = uId;
+            act.type = actType;
+            acts.push(act);
         }
         return acts;
     };
@@ -109,13 +108,13 @@ function World() {
     var deserialize = function (data) {
         var acts = unpackActors(data);
         acts.forEach(function (act) {
-            if ((act.type == Actor.LASER) || (act.type == Actor.SPACESHIP)) {
+            if ((act.type == Actor.LASER) || (act.type == Actor.SPACESHIP) || (act.type == Actor.BASE)) {
                 act.repaint();
             }
             if (act.type == Actor.LASER) {
                 for (var i = actors.length - 1; i >= 0; i--) {
                     var cact = actors[i];
-                    if (cact.type == Actor.SPACESHIP) {
+                    if ((cact.type == Actor.SPACESHIP) || (act.type == Actor.BASE)) {
                         if ((cact.x - act.x) * (cact.x - act.x) + (cact.y - act.y) * (cact.y - act.y) < 3000) {
                             cact.health -= act.dmg;
                             if (cact.health < 0) {
@@ -155,7 +154,7 @@ function World() {
         });
 
         actors.forEach(function (act) {
-            if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER)) {
+            if ((act.type == Actor.SPACESHIP) || (act.type == Actor.LASER) || (act.type == Actor.BASE)) {
                 act.update(ms, actors);
                 act.repaint();
             }
@@ -189,6 +188,49 @@ function World() {
                                 gas: 100
                             });
                             actors.push(resources);
+
+                            var checkLoc = function (loc) {
+                                var minD = acts.reduce(function (cur, act) {
+                                    if ((act.type == Actor.SPACESHIP) ||
+                                        (act.type == Actor.BASE)) {
+                                        var d = Math.sqrt((loc.x - act.x) * (loc.x - act.x) + (loc.y - act.y) * (loc.y - act.y));
+                                        return Math.min(cur, d);
+                                    }
+                                    return cur;
+                                }, 999999);
+                                return minD > 2000;
+                            };
+
+                            var genLoc = function (acts) {
+                                var rad = Math.random() * 1000 + 2000;
+                                var theta = Math.random() * Math.PI * 2;
+                                var ind = Math.floor(Math.random() * acts.length);
+                                return {
+                                    x: acts[ind].x + rad * Math.cos(theta),
+                                    y: acts[ind].y + rad * Math.sin(theta)
+                                };
+                            };
+                            var baseLoc = { x: 0, y: 0 }
+                            var enActs = acts.filter(function (act) { return (act.type == Actor.SPACESHIP) || (act.type == Actor.BASE); });
+                            if (enActs.length > 0) {
+                                baseLoc = genLoc(enActs);
+                                while (!checkLoc(loc)) {
+                                    baseLoc = genLoc(enActs);
+                                }
+                            }
+
+                            base = new Base({
+                                userId: playerId,
+                                actorId: 0,
+                                type: Actor.RESOURCES,
+                                img: "img/base.jpg",
+                                width: 200,
+                                height: 200,
+                                x: baseLoc.x,
+                                y: baseLoc.y,
+                                health: 1000
+                            });
+                            actors.push(base);
                         } else {
                             resources = res[0];
                         }
@@ -236,10 +278,24 @@ function World() {
             userId: 0,
             actorId: 0,
             type: Actor.RESOURCES,
-            minerals: 1000,
-            gas: 100
+            minerals: 10000,
+            gas: 1000
         });
-        actors = [resources];
+        actors.push(resources);
+
+
+        base = new Base({
+            userId: playerId,
+            actorId: 0,
+            type: Actor.RESOURCES,
+            img: "img/base.jpg",
+            width: 200,
+            height: 200,
+            x: 500,
+            y: 500,
+            health: 1000
+        });
+        actors.push(base);
         window.setInterval(function () {
             self.updateActors(ms);
         }, ms);
