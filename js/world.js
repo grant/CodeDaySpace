@@ -65,8 +65,8 @@ function World() {
             y: Math.random() * 500,
             vx: 0,
             vy: 0,
-            maxV: 100,
-            maxA: 2,
+            maxV: 1500,
+            maxA: 1000,
             scale: 1,
             img: 'img/spaceship.png'
         }));
