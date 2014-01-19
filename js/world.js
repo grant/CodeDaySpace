@@ -9,8 +9,8 @@ function World() {
 		type: 'ship',
 		x: 10,
 		y: 10,
-		vx: 10,
-		vy: 20,
+		vx: 100,
+		vy: -100,
 		size: 1,
 		img: '/img/spaceship.png'
     }));
