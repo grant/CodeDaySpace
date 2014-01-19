@@ -1,6 +1,18 @@
-$(function() {
-	var $spaceArea = $('.spaceArea');
+/// <reference path="world.js" />
+/// <reference path="jquery.js" />
 
-	var world = new World();
-	var ui = new UI(world);
+$(function () {
+    var $spaceArea = $('.spaceArea');
+
+    var world = new World();
+    world.onconnected(function () {
+        $("#loginBut").prop("disabled", false);
+    });
+
+    $("#loginBut").click(function () {
+        world.login($("#loginName").val(), function () {
+            $("#loginDiv").hide();
+            $("#gameDiv").show();
+        });
+    });
 });
